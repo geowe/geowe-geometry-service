@@ -1,0 +1,100 @@
+#%RAML 1.0
+title: GTS API
+version:0.1.0
+protocols: [HTTP, HTTPS]
+baseUri: http://server-url/deployed-app/operations
+mediatype: application/json
+types: !include ggs-types.raml
+/api:
+	options:
+		description: Retrieve specific description for resources (API)
+		responses:
+			200: 
+				body:
+					application/json:
+						type: ResourceDef[]
+/jts:
+	/buffer:
+		post:
+			description: calculates the geometry buffer sent in the body. Beware of the buffer in geometries with projection wgs84
+			mediaType: application/json
+			queryParameters:
+				distance:
+					displayName: distance
+					type: double
+					description: buffer to apply
+					example: 0.5
+					required: true
+				segments:
+					displayName: segments
+					type: integer
+					description: quadrants segments to build arcs.
+					example: 3
+					required: false
+					defaultValue: 8 (see JTS documentation)
+			body:
+				application/json:
+					type: FlatGeometry
+			responses:
+				201: 
+					body:					
+						application/json:
+							type: FlatGeometry
+	/union:							
+		post:
+			description: calculates the geometry resulting from the union of the geometries sent in the body
+			mediaType: application/json			
+			body:
+				type: FlatGeometry[]
+					miItems: 2
+					uniqueItems: true
+			responses:
+				201: 
+					body:					
+						application/json:
+							type: FlatGeometry
+
+/envelope:				
+		post:
+			description: calculates the envelope of the geometry sent in the body
+			mediaType: application/json			
+			body:
+				type: FlatGeometry
+			responses:
+				201: 
+					body:					
+						application/json:
+							type: FlatGeometry
+/centroid:				
+		post:
+			description: calculates the centroid of the geometry sent in the body
+			mediaType: application/json			
+			body:
+				type: FlatGeometry
+			responses:
+				201: 
+					body:					
+						application/json:
+							type: FlatGeometry
+/intersection:				
+		post:
+			description: calculates the outline geometry resulting from the intersection of source and overlay data sent in the body
+			mediaType: application/json			
+			body:
+				type: OperationData					
+			responses:
+				201: 
+					body:					
+						application/json:
+							type: FlatGeometry
+/intersection/elements:				
+		post:
+			description: calculates an array of geometries resulting from the intersection of source and overlay data sent in the body
+			mediaType: application/json			
+			body:
+				type: OperationData					
+			responses:
+				201: 
+					body:					
+						application/json:
+							type: FlatGeometry[]
