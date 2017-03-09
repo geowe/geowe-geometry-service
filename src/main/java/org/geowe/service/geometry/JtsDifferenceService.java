@@ -36,24 +36,23 @@ import org.geowe.service.model.OperationData;
 import org.jboss.resteasy.annotations.GZIP;
 
 /**
- * Rest end point for JTS Intersection operations resources
+ * Rest end point for JTS Difference operantions resources
  * 
- * @author lotor
+ * @author rafa@geowe.org
  *
  */
-@Path("/jts/intersection")
-public class JtsIntersectionService {
+@Path("/jts/difference")
+public class JtsDifferenceService {
 
 	@POST
 	@GZIP
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	// @IntersectionFilter
-	public Response getIntersection(@NotNull @Valid OperationData operationData,
+	public Response getDifference(@NotNull @Valid OperationData operationData,
 			@QueryParam("tolerance") @DefaultValue("-0.00001") double tolerance) {
 		GeoEngineer geoEngineer = new JTSGeoEngineer();
 		FlatGeometry intersectionFlatGeometry = new FlatGeometryBuilder()
-				.wkt(geoEngineer.calculateIntersection(operationData, tolerance)).build();
+				.wkt(geoEngineer.calculateDifference(operationData, tolerance)).build();
 
 		return Response.status(Status.CREATED).entity(intersectionFlatGeometry).build();
 	}
@@ -63,11 +62,11 @@ public class JtsIntersectionService {
 	@GZIP
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getIntersectionElements(@NotNull @Valid OperationData operationData,
+	public Response getDifferenceElements(@NotNull @Valid OperationData operationData,
 			@QueryParam("tolerance") @DefaultValue("-0.00001") double tolerance) {
 		GeoEngineer geoEngineer = new JTSGeoEngineer();
 
-		List<String> elements = geoEngineer.calculateIntersectionElements(operationData, tolerance);
+		List<String> elements = geoEngineer.calculateDifferenceElements(operationData, tolerance);
 
 		return Response.status(Status.CREATED).entity(elements).build();
 	}

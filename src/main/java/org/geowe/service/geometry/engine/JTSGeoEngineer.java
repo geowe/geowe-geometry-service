@@ -75,11 +75,10 @@ public class JTSGeoEngineer implements GeoEngineer {
 	 * geowe.service.model.OperationData)
 	 */
 	@Override
-	public String calculateIntersection(OperationData operationData) {
-		double tolerance = -0.00001;
+	public String calculateIntersection(OperationData operationData, double tolerance) {
 		final Geometry sourceGeometry = GeometryCombiner.combine(helper.toGeometries(operationData.getSourceData()));
 		final Geometry overlayGeometry = GeometryCombiner.combine(helper.toGeometries(operationData.getOverlayData()));
-		Geometry geomContorno = EnhancedPrecisionOp.intersection(sourceGeometry.buffer(-0.00001),
+		Geometry geomContorno = EnhancedPrecisionOp.intersection(sourceGeometry.buffer(tolerance),
 				overlayGeometry.buffer(tolerance));
 
 		return geomContorno.toText();
@@ -112,7 +111,37 @@ public class JTSGeoEngineer implements GeoEngineer {
 	}
 
 	@Override
-	public List<String> calculateIntersectionElements(OperationData operationData) {
-		return helper.getBasicGeometries(calculateIntersection(operationData));
+	public List<String> calculateIntersectionElements(OperationData operationData, double tolerance) {
+		return helper.getBasicGeometries(calculateIntersection(operationData, tolerance));
+	}
+
+	@Override
+	public String calculateDifference(OperationData operationData, double tolerance) {
+		final Geometry sourceGeometry = GeometryCombiner.combine(helper.toGeometries(operationData.getSourceData()));
+		final Geometry overlayGeometry = GeometryCombiner.combine(helper.toGeometries(operationData.getOverlayData()));
+		Geometry geomContorno = EnhancedPrecisionOp.difference(sourceGeometry.buffer(tolerance),
+				overlayGeometry.buffer(tolerance));
+
+		return geomContorno.toText();
+	}
+
+	@Override
+	public List<String> calculateDifferenceElements(OperationData operationData, double tolerance) {
+		return helper.getBasicGeometries(calculateDifference(operationData, tolerance));
+	}
+
+	@Override
+	public String calculateSymDifference(OperationData operationData, double tolerance) {
+		final Geometry sourceGeometry = GeometryCombiner.combine(helper.toGeometries(operationData.getSourceData()));
+		final Geometry overlayGeometry = GeometryCombiner.combine(helper.toGeometries(operationData.getOverlayData()));
+		Geometry geomContorno = EnhancedPrecisionOp.symDifference(sourceGeometry.buffer(tolerance),
+				overlayGeometry.buffer(tolerance));
+
+		return geomContorno.toText();
+	}
+
+	@Override
+	public List<String> calculateSymDifferenceElements(OperationData operationData, double tolerance) {
+		return helper.getBasicGeometries(calculateSymDifference(operationData, tolerance));
 	}
 }

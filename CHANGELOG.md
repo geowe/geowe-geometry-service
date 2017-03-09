@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
-You can see the previous changelog [here] (http://www.geowe.org/index.php?id=changelog)
+
 
 ## [Unreleased]
 ### Added
@@ -9,6 +9,13 @@ You can see the previous changelog [here] (http://www.geowe.org/index.php?id=cha
 - Geometry validations
 - Asynchronous tasks
 
+## [0.1.0]SNAPSHOT - 2017-03-08
+
+### Added
+- Implemented resources for JTS operations:
+	- Difference
+	- Symetric Difference 
+- Added support for Points and LineStrings in intersection, Difference and Symetric Difference operations. Beware with tolerance to obtain best results
 
 ## [0.0.1]SNAPSHOT - 2017-03-06
 

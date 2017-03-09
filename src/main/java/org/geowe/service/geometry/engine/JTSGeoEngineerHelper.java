@@ -76,7 +76,15 @@ public class JTSGeoEngineerHelper {
 				elementsWkt.add(geomContorno.toText());
 			} else if (geomContorno instanceof MultiPolygon) {
 				elementsWkt.addAll(getPolygons((MultiPolygon) geomContorno));
-			} else if (geomContorno instanceof GeometryCollection) {
+			} else if (geomContorno instanceof LineString) {
+				elementsWkt.add(geomContorno.toText());
+			} else if (geomContorno instanceof MultiLineString) {
+				elementsWkt.addAll(getLineStrings((MultiLineString) geomContorno));
+			} else if (geomContorno instanceof Point) {
+				elementsWkt.add(geomContorno.toText());
+			} else if (geomContorno instanceof MultiPoint) {
+				elementsWkt.addAll(getPoints((MultiPoint) geomContorno));
+			}else if (geomContorno instanceof GeometryCollection) {
 				elementsWkt.addAll(getMultiGeometries((GeometryCollection) geomContorno));
 			}
 		}

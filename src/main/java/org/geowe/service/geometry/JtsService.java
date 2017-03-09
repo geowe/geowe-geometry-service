@@ -77,20 +77,6 @@ public class JtsService {
 		return Response.status(Status.CREATED).entity(unionFlatGeometry).build();
 	}
 
-//	@Path("/intersection")
-//	@POST
-//	@GZIP
-//	@Produces(MediaType.APPLICATION_JSON)
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	// @IntersectionFilter
-//	public Response getIntersection(@NotNull @Valid OperationData operationData) {
-//		GeoEngineer geoEngineer = new JTSGeoEngineer();
-//		FlatGeometry intersectionFlatGeometry = new FlatGeometryBuilder()
-//				.wkt(geoEngineer.calculateIntersection(operationData)).build();
-//
-//		return Response.status(Status.CREATED).entity(intersectionFlatGeometry).build();
-//	}
-
 	@Path("/envelope")
 	@POST
 	@GZIP

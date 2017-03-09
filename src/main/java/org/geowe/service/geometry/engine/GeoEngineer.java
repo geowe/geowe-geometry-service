@@ -25,7 +25,7 @@ import org.geowe.service.model.OperationData;
  * This class represents the Geometry expert. It is responsible for performing
  * the geometric operations
  * 
- * @author lotor
+ * @author rafa@geowe.org
  *
  */
 public interface GeoEngineer {
@@ -34,12 +34,20 @@ public interface GeoEngineer {
 
 	String calculateUnion(Collection<FlatGeometry> entities);
 
-	String calculateIntersection(OperationData entities);
+	String calculateIntersection(OperationData entities, double tolerance);
 	
-	List<String> calculateIntersectionElements(OperationData entities);
+	List<String> calculateIntersectionElements(OperationData entities, double tolerance);
 
 	String calculateEnvelope(String wkt);
 
 	String calculateCentroid(String wkt);
+
+	String calculateDifference(OperationData operationData, double tolerance);
+
+	List<String> calculateDifferenceElements(OperationData operationData, double tolerance);
+	
+	String calculateSymDifference(OperationData operationData, double tolerance);
+
+	List<String> calculateSymDifferenceElements(OperationData operationData, double tolerance);
 
 }
