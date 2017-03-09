@@ -17,7 +17,7 @@
           <boolProp name="LoopController.continue_forever">false</boolProp>
           <stringProp name="LoopController.loops">1</stringProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">2</stringProp>
+        <stringProp name="ThreadGroup.num_threads">3</stringProp>
         <stringProp name="ThreadGroup.ramp_time">5</stringProp>
         <longProp name="ThreadGroup.start_time">1417597200000</longProp>
         <longProp name="ThreadGroup.end_time">1417600800000</longProp>
@@ -126,7 +126,7 @@ if (response.size == 0) {
         </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="JTS" enabled="true"/>
         <hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Buffer" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Buffer" enabled="false"/>
           <hashTree>
             <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Buffer Data " enabled="true">
               <stringProp name="delimiter">&amp;</stringProp>
@@ -180,7 +180,7 @@ if (response.size == 0) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Centroid" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Centroid" enabled="false"/>
           <hashTree>
             <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Centroid Data " enabled="true">
               <stringProp name="delimiter">&amp;</stringProp>
@@ -234,7 +234,7 @@ if (response.size == 0) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Envelope" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Envelope" enabled="false"/>
           <hashTree>
             <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Envelope Data " enabled="true">
               <stringProp name="delimiter">&amp;</stringProp>
@@ -288,7 +288,7 @@ if (response.size == 0) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Union" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Union" enabled="false"/>
           <hashTree>
             <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Union Data" enabled="true">
               <stringProp name="delimiter">&amp;</stringProp>
@@ -342,7 +342,7 @@ if (response.size == 0) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Intersection" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Intersection" enabled="false"/>
           <hashTree>
             <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Intersection Data" enabled="true">
               <stringProp name="delimiter">&amp;</stringProp>
@@ -395,7 +395,7 @@ if (response.size == 0) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Intersection elements" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Intersection elements" enabled="false"/>
           <hashTree>
             <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Intersection Data" enabled="true">
               <stringProp name="delimiter">&amp;</stringProp>
@@ -448,7 +448,7 @@ if (response.size == 0) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Difference" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Difference" enabled="false"/>
           <hashTree>
             <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Difference Data" enabled="true">
               <stringProp name="delimiter">&amp;</stringProp>
@@ -501,7 +501,7 @@ if (response.size == 0) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Difference elements" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Difference elements" enabled="false"/>
           <hashTree>
             <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Difference Data" enabled="true">
               <stringProp name="delimiter">&amp;</stringProp>
@@ -554,7 +554,7 @@ if (response.size == 0) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Sym Difference" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Sym Difference" enabled="false"/>
           <hashTree>
             <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Sym Difference Data" enabled="true">
               <stringProp name="delimiter">&amp;</stringProp>
@@ -607,7 +607,7 @@ if (response.size == 0) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Sym Difference elements" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Sym Difference elements" enabled="false"/>
           <hashTree>
             <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Sym Difference Data" enabled="true">
               <stringProp name="delimiter">&amp;</stringProp>
@@ -638,6 +638,59 @@ if (response.size == 0) {
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
               <stringProp name="HTTPSampler.path">${baseUrl}/operations/jts/sym-difference/elements</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <boolProp name="HTTPSampler.BROWSER_COMPATIBLE_MULTIPART">true</boolProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+              <boolProp name="HTTPSampler.monitor">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP STATUS CREATED" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="49587">201</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">8</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Intersects elements" enabled="true"/>
+          <hashTree>
+            <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Intersect Data" enabled="true">
+              <stringProp name="delimiter">&amp;</stringProp>
+              <stringProp name="fileEncoding">UTF-8</stringProp>
+              <stringProp name="filename">intersect-data.csv</stringProp>
+              <boolProp name="quotedData">false</boolProp>
+              <boolProp name="recycle">true</boolProp>
+              <stringProp name="shareMode">shareMode.all</stringProp>
+              <boolProp name="stopThread">false</boolProp>
+              <stringProp name="variableNames">json</stringProp>
+            </CSVDataSet>
+            <hashTree/>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="12. POST intersect elements" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">${json}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${serverName}</stringProp>
+              <stringProp name="HTTPSampler.port">${port}</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">${baseUrl}/operations/jts/intersect/elements</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
