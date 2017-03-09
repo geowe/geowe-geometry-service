@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geowe.service</groupId>
 	<artifactId>geowe-geometry-service</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.2.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>geowe-geometry-service</name>
 	<properties>

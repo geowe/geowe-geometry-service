@@ -104,8 +104,6 @@ public class DataTestProvider {
 		for(String wkt: geomsWkt){
 			fGeoms.add(new FlatGeometryBuilder().wkt(wkt).crs(CRS).id(DEFAULT_ID).build());
 		}
-		System.out.println("Num. Geometrías recuperadas del fichero: "+fGeoms.size());
-		System.out.println("Geometrías recuperadas del fichero: "+fGeoms);
 		return fGeoms;
 	}
 	

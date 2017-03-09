@@ -70,7 +70,7 @@ public class JTSGeoEngineerHelper {
 		final List<String> elementsWkt = new ArrayList<String>();
 
 		Geometry geomContorno = getGeom(wkt);
-		
+
 		if (geomContorno != null && geomContorno.isValid()) {
 			if (geomContorno instanceof Polygon) {
 				elementsWkt.add(geomContorno.toText());
@@ -84,7 +84,7 @@ public class JTSGeoEngineerHelper {
 				elementsWkt.add(geomContorno.toText());
 			} else if (geomContorno instanceof MultiPoint) {
 				elementsWkt.addAll(getPoints((MultiPoint) geomContorno));
-			}else if (geomContorno instanceof GeometryCollection) {
+			} else if (geomContorno instanceof GeometryCollection) {
 				elementsWkt.addAll(getMultiGeometries((GeometryCollection) geomContorno));
 			}
 		}
@@ -129,12 +129,26 @@ public class JTSGeoEngineerHelper {
 	public List<String> getMultiGeometries(GeometryCollection geom) {
 		final List<String> geomsWkt = new ArrayList<String>();
 
-		final GeometryCollection gc =  geom;
+		final GeometryCollection gc = geom;
 		for (int i = 0; i < gc.getNumGeometries(); i++) {
 			final Geometry geometry = gc.getGeometryN(i);
 			geomsWkt.add(geometry.toText());
 		}
 		return geomsWkt;
+	}
+
+	public boolean intersects(final FlatGeometry fgeomToIntersect, final Collection<FlatGeometry> wktElements,
+			double tolerance) {
+		boolean intersects = false;
+		Geometry geom = getGeom(fgeomToIntersect.getWkt());
+		for (final FlatGeometry flatGeometry : wktElements) {
+			if (geom.buffer(tolerance)
+					.intersects(getGeom(flatGeometry.getWkt()).buffer(tolerance))) {
+				intersects = true;
+				break;
+			}
+		}
+		return intersects;
 	}
 
 }

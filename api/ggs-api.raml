@@ -154,7 +154,7 @@ types: !include ggs-types.raml
 							type: FlatGeometry[]
 /sym-difference:				
 		post:
-			description: calculates the outline geometry resulting from the symetric difference of source and overlay data sent in the body
+			description: calculates the outline geometry resulting from the symmetric difference of source and overlay data sent in the body
 			mediaType: application/json	
 			queryParameters:
 				tolerance:
@@ -173,7 +173,7 @@ types: !include ggs-types.raml
 							type: FlatGeometry
 /sym-difference/elements:				
 		post:
-			description: calculates an array of geometries resulting from the symetric difference of source and overlay data sent in the body
+			description: calculates an array of geometries resulting from the symmetric difference of source and overlay data sent in the body
 			mediaType: application/json
 			queryParameters:
 				tolerance:
@@ -183,6 +183,25 @@ types: !include ggs-types.raml
 					example: -0.00001
 					required: false	
 					defaultValue: -0.00001			
+			body:
+				type: OperationData					
+			responses:
+				201: 
+					body:					
+						application/json:
+							type: FlatGeometry[]
+/intersect/elements:				
+		post:
+			description: Calculates the geometries in source that intersects with overlay data, sent in the body
+			mediaType: application/json	
+			queryParameters:
+				tolerance:
+					displayName: tolerance
+					type: double
+					description: tolerance to apply operation
+					example: 0.001
+					required: false	
+					defaultValue: 0.001		
 			body:
 				type: OperationData					
 			responses:
