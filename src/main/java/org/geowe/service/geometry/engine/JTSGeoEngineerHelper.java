@@ -18,7 +18,9 @@ package org.geowe.service.geometry.engine;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
+import org.geowe.service.geometry.FlatGeometryBuilder;
 import org.geowe.service.model.FlatGeometry;
 import org.jboss.logging.Logger;
 import org.jboss.resteasy.spi.ReaderException;
@@ -65,90 +67,66 @@ public class JTSGeoEngineerHelper {
 		return geometries;
 	}
 
-	// TODO: Consider working with FlatGeometry instead of strings
 	public List<String> getBasicGeometries(String wkt) {
 		final List<String> elementsWkt = new ArrayList<String>();
 
 		Geometry geomContorno = getGeom(wkt);
 
 		if (geomContorno != null && geomContorno.isValid()) {
+			GeometryExtractor extractor = new GeometryExtractor();
 			if (geomContorno instanceof Polygon) {
 				elementsWkt.add(geomContorno.toText());
 			} else if (geomContorno instanceof MultiPolygon) {
-				elementsWkt.addAll(getPolygons((MultiPolygon) geomContorno));
+				elementsWkt.addAll(extractor.getPolygons((MultiPolygon) geomContorno));
 			} else if (geomContorno instanceof LineString) {
 				elementsWkt.add(geomContorno.toText());
 			} else if (geomContorno instanceof MultiLineString) {
-				elementsWkt.addAll(getLineStrings((MultiLineString) geomContorno));
+				elementsWkt.addAll(extractor.getLineStrings((MultiLineString) geomContorno));
 			} else if (geomContorno instanceof Point) {
 				elementsWkt.add(geomContorno.toText());
 			} else if (geomContorno instanceof MultiPoint) {
-				elementsWkt.addAll(getPoints((MultiPoint) geomContorno));
+				elementsWkt.addAll(extractor.getPoints((MultiPoint) geomContorno));
 			} else if (geomContorno instanceof GeometryCollection) {
-				elementsWkt.addAll(getMultiGeometries((GeometryCollection) geomContorno));
+				elementsWkt.addAll(extractor.getMultiGeometries((GeometryCollection) geomContorno));
 			}
 		}
 		return elementsWkt;
 	}
 
-	public List<String> getPolygons(MultiPolygon geom) {
-		final List<String> polygonsWkt = new ArrayList<String>();
-
-		final MultiPolygon multiPolygon = geom;
-		for (int i = 0; i < multiPolygon.getNumGeometries(); i++) {
-			final Polygon pol = (Polygon) multiPolygon.getGeometryN(i);
-			polygonsWkt.add(pol.toText());
-		}
-
-		return polygonsWkt;
-	}
-
-	public List<String> getLineStrings(MultiLineString geom) {
-		final List<String> lineStringsWkt = new ArrayList<String>();
-
-		final MultiLineString multiLine = geom;
-		for (int i = 0; i < multiLine.getNumGeometries(); i++) {
-			final LineString pol = (LineString) multiLine.getGeometryN(i);
-			lineStringsWkt.add(pol.toText());
-		}
-
-		return lineStringsWkt;
-	}
-
-	public List<String> getPoints(MultiPoint geom) {
-		final List<String> pointsWkt = new ArrayList<String>();
-
-		final MultiPoint multiPoint = geom;
-		for (int i = 0; i < multiPoint.getNumGeometries(); i++) {
-			final Point pol = (Point) multiPoint.getGeometryN(i);
-			pointsWkt.add(pol.toText());
-		}
-		return pointsWkt;
-	}
-
-	public List<String> getMultiGeometries(GeometryCollection geom) {
-		final List<String> geomsWkt = new ArrayList<String>();
-
-		final GeometryCollection gc = geom;
-		for (int i = 0; i < gc.getNumGeometries(); i++) {
-			final Geometry geometry = gc.getGeometryN(i);
-			geomsWkt.add(geometry.toText());
-		}
-		return geomsWkt;
-	}
-
-	public boolean intersects(final FlatGeometry fgeomToIntersect, final Collection<FlatGeometry> wktElements,
+	public boolean intersects(final FlatGeometry fgeomToIntersect, final Collection<FlatGeometry> flatGeometries,
 			double tolerance) {
 		boolean intersects = false;
 		Geometry geom = getGeom(fgeomToIntersect.getWkt());
-		for (final FlatGeometry flatGeometry : wktElements) {
-			if (geom.buffer(tolerance)
-					.intersects(getGeom(flatGeometry.getWkt()).buffer(tolerance))) {
+		for (final FlatGeometry flatGeometry : flatGeometries) {
+			if (geom.buffer(tolerance).intersects(getGeom(flatGeometry.getWkt()).buffer(tolerance))) {
 				intersects = true;
 				break;
 			}
 		}
 		return intersects;
+	}
+
+	public FlatGeometry getIntersectedFlatGeomtetry(String wkt, Set<FlatGeometry> sourceFlatGeometries,
+			double tolerance) {
+		FlatGeometry intersectedFlatGeom = new FlatGeometryBuilder().wkt(wkt).build();
+		for (FlatGeometry flatGeometry : sourceFlatGeometries) {
+			if (getGeom(wkt).intersects(getGeom(flatGeometry.getWkt()).buffer(tolerance))) {
+				intersectedFlatGeom.setCrs(flatGeometry.getCrs());
+				intersectedFlatGeom.setId(flatGeometry.getId());
+				break;
+			}
+		}
+		return intersectedFlatGeom;
+	}
+	
+	public List<FlatGeometry> getFilledFlatGeometries(Set<FlatGeometry> sourceFlatGeometries,
+			List<String> intersectedWkts, double tolerance) {
+		List<FlatGeometry> fGeoms = new ArrayList<FlatGeometry>();
+
+		for (String intersectedWkt : intersectedWkts) {
+			fGeoms.add(getIntersectedFlatGeomtetry(intersectedWkt, sourceFlatGeometries, tolerance));
+		}
+		return fGeoms;
 	}
 
 }

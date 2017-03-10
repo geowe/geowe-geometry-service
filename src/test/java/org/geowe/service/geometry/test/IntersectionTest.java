@@ -127,8 +127,9 @@ public class IntersectionTest {
 		Response response = target.request().post(
 				Entity.entity(opData,"application/json;charset=UTF-8"));
 
-		List<String> intersectionGeometries = response.readEntity(new GenericType<List<String>>(){});
+		List<FlatGeometry> intersectionGeometries = response.readEntity(new GenericType<List<FlatGeometry>>(){});
 		response.close();
+		log.info(intersectionGeometries);
 		Assert.isTrue(response.getStatus() == Status.CREATED.getStatusCode());
 		Assert.isTrue(intersectionGeometries.size() == 7);
 	}
@@ -140,8 +141,9 @@ public class IntersectionTest {
 		Response response = target.queryParam("tolerance", 0.00001).request().post(
 				Entity.entity(opData,"application/json;charset=UTF-8"));
 
-		List<String> intersectionGeometries = response.readEntity(new GenericType<List<String>>(){});
+		List<FlatGeometry> intersectionGeometries = response.readEntity(new GenericType<List<FlatGeometry>>(){});
 		response.close();
+		log.info(intersectionGeometries);
 		Assert.isTrue(response.getStatus() == Status.CREATED.getStatusCode());
 		Assert.isTrue(intersectionGeometries.size() == 2);
 	}

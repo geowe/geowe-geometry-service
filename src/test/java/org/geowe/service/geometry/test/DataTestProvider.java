@@ -39,7 +39,7 @@ public class DataTestProvider {
 	public static final String POLYGON_2 = "POLYGON((-4.7577667236328125 37.636202454188854,-4.78729248046875 37.579630178849854,-4.725494384765625 37.54316179356405,-4.6307373046875 37.55350538772098,-4.6410369873046875 37.59758565735052,-4.67742919921875 37.63837745155179,-4.7577667236328125 37.636202454188854))";
 	public static final String POLYGON_3 = "POLYGON((-4.634513854980469 37.63147161675051,-4.6657562255859375 37.60155704339839,-4.6369171142578125 37.55965642520303,-4.623527526855469 37.54441399087736,-4.6039581298828125 37.57516784429852,-4.634513854980469 37.63147161675051))";
 	public static final String CRS = "WGS84";
-	public static final String DEFAULT_ID = "default_id";
+	public static final String DEFAULT_ID = "1";
 
 	
 	public static Geometry getGeom(String wkt) {
@@ -101,8 +101,9 @@ public class DataTestProvider {
 		JTSGeoEngineerHelper helper = new JTSGeoEngineerHelper();
 		List<String> geomsWkt = helper.getBasicGeometries(getFile(fileName));
 		Set<FlatGeometry> fGeoms = new HashSet<FlatGeometry>();
+		int id = Integer.valueOf(DEFAULT_ID);
 		for(String wkt: geomsWkt){
-			fGeoms.add(new FlatGeometryBuilder().wkt(wkt).crs(CRS).id(DEFAULT_ID).build());
+			fGeoms.add(new FlatGeometryBuilder().wkt(wkt).crs(CRS).id(""+id++).build());
 		}
 		return fGeoms;
 	}

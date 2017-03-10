@@ -65,8 +65,7 @@ public class JtsDifferenceService {
 	public Response getDifferenceElements(@NotNull @Valid OperationData operationData,
 			@QueryParam("tolerance") @DefaultValue("-0.00001") double tolerance) {
 		GeoEngineer geoEngineer = new JTSGeoEngineer();
-
-		List<String> elements = geoEngineer.calculateDifferenceElements(operationData, tolerance);
+		List<FlatGeometry> elements = geoEngineer.calculateDifferenceElements(operationData, tolerance);
 
 		return Response.status(Status.CREATED).entity(elements).build();
 	}

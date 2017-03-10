@@ -111,9 +111,8 @@ public class SymDifferenceTest {
 		Response response = target.request().post(
 				Entity.entity(opData,"application/json;charset=UTF-8"));
 
-		List<String> differenceGeometries = response.readEntity(new GenericType<List<String>>(){});
+		List<FlatGeometry> differenceGeometries = response.readEntity(new GenericType<List<FlatGeometry>>(){});
 		response.close();
-		log.info("***"+differenceGeometries.size());
 		Assert.isTrue(response.getStatus() == Status.CREATED.getStatusCode());
 		Assert.isTrue(differenceGeometries.size() == 13);
 	}
@@ -125,8 +124,9 @@ public class SymDifferenceTest {
 		Response response = target.queryParam("tolerance", 0.0001).request().post(
 				Entity.entity(opData,"application/json;charset=UTF-8"));
 
-		List<String> differenceGeometries = response.readEntity(new GenericType<List<String>>(){});
+		List<FlatGeometry> differenceGeometries = response.readEntity(new GenericType<List<FlatGeometry>>(){});
 		response.close();
+		log.info("***"+differenceGeometries);
 		Assert.isTrue(response.getStatus() == Status.CREATED.getStatusCode());
 		Assert.isTrue(differenceGeometries.size() == 5);
 	}

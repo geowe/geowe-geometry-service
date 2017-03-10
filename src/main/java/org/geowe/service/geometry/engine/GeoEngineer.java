@@ -93,7 +93,7 @@ public interface GeoEngineer {
 	 *            tolerance to apply.
 	 * @return A Collection of WKT strings
 	 */
-	List<String> calculateIntersectionElements(OperationData entities, double tolerance);
+	List<FlatGeometry> calculateIntersectionElements(OperationData entities, double tolerance);
 
 	/**
 	 * Calculates the outline geometry resulting from the Difference of source
@@ -117,7 +117,7 @@ public interface GeoEngineer {
 	 *            tolerance to apply.
 	 * @return A Collection of WKT strings
 	 */
-	List<String> calculateDifferenceElements(OperationData operationData, double tolerance);
+	List<FlatGeometry> calculateDifferenceElements(OperationData operationData, double tolerance);
 
 	/**
 	 * Calculates the outline geometry resulting from the Symmetric Difference of
@@ -141,7 +141,7 @@ public interface GeoEngineer {
 	 *            tolerance to apply.
 	 * @return A Collection of WKT strings
 	 */
-	List<String> calculateSymDifferenceElements(OperationData operationData, double tolerance);
+	List<FlatGeometry> calculateSymDifferenceElements(OperationData operationData, double tolerance);
 
 	/**
 	 * Calculates the geometries in source that intersects with overlay data, sent in the body

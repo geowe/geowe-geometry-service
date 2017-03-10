@@ -18,10 +18,8 @@ package org.geowe.service.geometry.engine;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import org.geowe.service.model.FlatGeometry;
 import org.geowe.service.model.OperationData;
-
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.util.GeometryCombiner;
 import com.vividsolutions.jts.precision.EnhancedPrecisionOp;
@@ -30,7 +28,7 @@ import com.vividsolutions.jts.precision.EnhancedPrecisionOp;
  * This class represents the JTS geometry expert. It is responsible for
  * performing the geometric operations
  * 
-* @author rafa@geowe.org
+ * @author rafa@geowe.org
  *
  */
 public class JTSGeoEngineer implements GeoEngineer {
@@ -120,8 +118,10 @@ public class JTSGeoEngineer implements GeoEngineer {
 	 */
 
 	@Override
-	public List<String> calculateIntersectionElements(OperationData operationData, double tolerance) {
-		return helper.getBasicGeometries(calculateIntersection(operationData, tolerance));
+	public List<FlatGeometry> calculateIntersectionElements(OperationData operationData, double tolerance) {
+		List<String> intersectedWkts = helper.getBasicGeometries(calculateIntersection(operationData, tolerance));
+
+		return helper.getFilledFlatGeometries(operationData.getSourceData(), intersectedWkts, tolerance);
 	}
 
 	/*
@@ -149,8 +149,9 @@ public class JTSGeoEngineer implements GeoEngineer {
 	 * (org.geowe.service.model.OperationData, double)
 	 */
 	@Override
-	public List<String> calculateDifferenceElements(OperationData operationData, double tolerance) {
-		return helper.getBasicGeometries(calculateDifference(operationData, tolerance));
+	public List<FlatGeometry> calculateDifferenceElements(OperationData operationData, double tolerance) {
+		List<String> differencedWkts = helper.getBasicGeometries(calculateDifference(operationData, tolerance));
+		return helper.getFilledFlatGeometries(operationData.getSourceData(), differencedWkts, tolerance);
 	}
 
 	/*
@@ -178,13 +179,17 @@ public class JTSGeoEngineer implements GeoEngineer {
 	 * double)
 	 */
 	@Override
-	public List<String> calculateSymDifferenceElements(OperationData operationData, double tolerance) {
-		return helper.getBasicGeometries(calculateSymDifference(operationData, tolerance));
+	public List<FlatGeometry> calculateSymDifferenceElements(OperationData operationData, double tolerance) {
+		List<String> differencedWkts = helper.getBasicGeometries(calculateSymDifference(operationData, tolerance));
+		return helper.getFilledFlatGeometries(operationData.getSourceData(), differencedWkts, tolerance);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geowe.service.geometry.engine.GeoEngineer#calculateIntersect(org.geowe.service.model.OperationData, double)
+	 * 
+	 * @see
+	 * org.geowe.service.geometry.engine.GeoEngineer#calculateIntersect(org.
+	 * geowe.service.model.OperationData, double)
 	 */
 	@Override
 	public List<FlatGeometry> calculateIntersectedElements(OperationData operationData, double tolerance) {
@@ -198,6 +203,4 @@ public class JTSGeoEngineer implements GeoEngineer {
 
 		return intersectedElements;
 	}
-	
-	
 }
