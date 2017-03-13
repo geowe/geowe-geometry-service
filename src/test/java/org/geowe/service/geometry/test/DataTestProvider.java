@@ -97,6 +97,20 @@ public class DataTestProvider {
 		return operationData;
 	}
 	
+	public static OperationData get2PolygonsOverlayFCData() {
+		OperationData operationData = new OperationData();
+		
+		Set<FlatGeometry> source = new HashSet<FlatGeometry>();
+		source.addAll(getGeomsFromFile("feature-collection-polygons.wkt"));
+		operationData.setSourceData(source);
+		
+		Set<FlatGeometry> overlay = new HashSet<FlatGeometry>();
+		overlay.addAll(getGeomsFromFile("overlay-2Polygons.wkt"));
+		operationData.setOverlayData(overlay);
+
+		return operationData;
+	}
+	
 	private static Set<FlatGeometry> getGeomsFromFile(String fileName){
 		JTSGeoEngineerHelper helper = new JTSGeoEngineerHelper();
 		List<String> geomsWkt = helper.getBasicGeometries(getFile(fileName));

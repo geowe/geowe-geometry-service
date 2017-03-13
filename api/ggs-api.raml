@@ -1,6 +1,6 @@
 #%RAML 1.0
 title: GTS API
-version:0.1.0
+version:0.3.1
 protocols: [HTTP, HTTPS]
 baseUri: http://server-url/deployed-app/operations
 mediatype: application/json
@@ -53,8 +53,32 @@ types: !include ggs-types.raml
 					body:					
 						application/json:
 							type: FlatGeometry
+		/combined:							
+			post:
+				description: Combine a collection of FlatGeometry into a new FlatGeometry, keeping vector boundaries
+				mediaType: application/json			
+				body:
+					type: FlatGeometry[]
+						miItems: 2
+						uniqueItems: true
+				responses:
+					201: 
+						body:					
+							application/json:
+								type: FlatGeometry
+		/overlaped:							
+			post:
+				description: Calculate the geometric union (keeping vector boundaries) of source and overlay data sent in the body
+				mediaType: application/json			
+				body:
+					type: OperationData
+				responses:
+					201: 
+						body:					
+							application/json:
+								type: FlatGeometry[]
 
-/envelope:				
+	/envelope:				
 		post:
 			description: calculates the envelope of the geometry sent in the body
 			mediaType: application/json			
@@ -65,7 +89,7 @@ types: !include ggs-types.raml
 					body:					
 						application/json:
 							type: FlatGeometry
-/centroid:				
+	/centroid:				
 		post:
 			description: calculates the centroid of the geometry sent in the body
 			mediaType: application/json			
@@ -76,7 +100,7 @@ types: !include ggs-types.raml
 					body:					
 						application/json:
 							type: FlatGeometry
-/intersection:				
+	/intersection:				
 		post:
 			description: calculates the outline geometry resulting from the intersection of source and overlay data sent in the body
 			mediaType: application/json	
@@ -95,26 +119,26 @@ types: !include ggs-types.raml
 					body:					
 						application/json:
 							type: FlatGeometry
-/intersection/elements:				
-		post:
-			description: calculates an array of geometries resulting from the intersection of source and overlay data sent in the body
-			mediaType: application/json	
-			queryParameters:
-				tolerance:
-					displayName: tolerance
-					type: double
-					description: tolerance to apply operation
-					example: -0.00001
-					required: false	
-					defaultValue: -0.00001		
-			body:
-				type: OperationData					
-			responses:
-				201: 
-					body:					
-						application/json:
-							type: FlatGeometry[]
-/difference:				
+		/elements:				
+			post:
+				description: calculates an array of geometries resulting from the intersection of source and overlay data sent in the body
+				mediaType: application/json	
+				queryParameters:
+					tolerance:
+						displayName: tolerance
+						type: double
+						description: tolerance to apply operation
+						example: -0.00001
+						required: false	
+						defaultValue: -0.00001		
+				body:
+					type: OperationData					
+				responses:
+					201: 
+						body:					
+							application/json:
+								type: FlatGeometry[]
+	/difference:				
 		post:
 			description: calculates the outline geometry resulting from the difference of source and overlay data sent in the body
 			mediaType: application/json	
@@ -133,26 +157,26 @@ types: !include ggs-types.raml
 					body:					
 						application/json:
 							type: FlatGeometry
-/difference/elements:				
-		post:
-			description: calculates an array of geometries resulting from the difference of source and overlay data sent in the body
-			mediaType: application/json
-			queryParameters:
-				tolerance:
-					displayName: tolerance
-					type: double
-					description: tolerance to apply operation
-					example: -0.00001
-					required: false	
-					defaultValue: -0.00001			
-			body:
-				type: OperationData					
-			responses:
-				201: 
-					body:					
-						application/json:
-							type: FlatGeometry[]
-/sym-difference:				
+		/elements:				
+			post:
+				description: calculates an array of geometries resulting from the difference of source and overlay data sent in the body
+				mediaType: application/json
+				queryParameters:
+					tolerance:
+						displayName: tolerance
+						type: double
+						description: tolerance to apply operation
+						example: -0.00001
+						required: false	
+						defaultValue: -0.00001			
+				body:
+					type: OperationData					
+				responses:
+					201: 
+						body:					
+							application/json:
+								type: FlatGeometry[]
+	/sym-difference:				
 		post:
 			description: calculates the outline geometry resulting from the symmetric difference of source and overlay data sent in the body
 			mediaType: application/json	
@@ -171,26 +195,26 @@ types: !include ggs-types.raml
 					body:					
 						application/json:
 							type: FlatGeometry
-/sym-difference/elements:				
-		post:
-			description: calculates an array of geometries resulting from the symmetric difference of source and overlay data sent in the body
-			mediaType: application/json
-			queryParameters:
-				tolerance:
-					displayName: tolerance
-					type: double
-					description: tolerance to apply operation
-					example: -0.00001
-					required: false	
-					defaultValue: -0.00001			
-			body:
-				type: OperationData					
-			responses:
-				201: 
-					body:					
-						application/json:
-							type: FlatGeometry[]
-/intersect/elements:				
+		/elements:				
+			post:
+				description: calculates an array of geometries resulting from the symmetric difference of source and overlay data sent in the body
+				mediaType: application/json
+				queryParameters:
+					tolerance:
+						displayName: tolerance
+						type: double
+						description: tolerance to apply operation
+						example: -0.00001
+						required: false	
+						defaultValue: -0.00001			
+				body:
+					type: OperationData					
+				responses:
+					201: 
+						body:					
+							application/json:
+								type: FlatGeometry[]
+	/intersect/elements:				
 		post:
 			description: Calculates the geometries in source that intersects with overlay data, sent in the body
 			mediaType: application/json	

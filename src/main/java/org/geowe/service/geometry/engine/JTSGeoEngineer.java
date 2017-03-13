@@ -18,10 +18,14 @@ package org.geowe.service.geometry.engine;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+
 import org.geowe.service.model.FlatGeometry;
 import org.geowe.service.model.OperationData;
+
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.util.GeometryCombiner;
+import com.vividsolutions.jts.geom.util.LinearComponentExtracter;
 import com.vividsolutions.jts.precision.EnhancedPrecisionOp;
 
 /**
@@ -163,8 +167,8 @@ public class JTSGeoEngineer implements GeoEngineer {
 	 */
 	@Override
 	public String calculateSymDifference(OperationData operationData, double tolerance) {
-		final Geometry sourceGeometry = GeometryCombiner.combine(helper.toGeometries(operationData.getSourceData()));
-		final Geometry overlayGeometry = GeometryCombiner.combine(helper.toGeometries(operationData.getOverlayData()));
+		final Geometry sourceGeometry = helper.getGeom(combine(operationData.getSourceData()));
+		final Geometry overlayGeometry = helper.getGeom(combine(operationData.getOverlayData()));
 		Geometry geomContorno = EnhancedPrecisionOp.symDifference(sourceGeometry.buffer(tolerance),
 				overlayGeometry.buffer(tolerance));
 
@@ -203,4 +207,64 @@ public class JTSGeoEngineer implements GeoEngineer {
 
 		return intersectedElements;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.geowe.service.geometry.engine.GeoEngineer#combine(java.util.
+	 * Collection)
+	 */
+	@Override
+	public String combine(Collection<FlatGeometry> entities) {
+		final Geometry combinedGeometry = GeometryCombiner.combine(helper.toGeometries(entities));
+		return combinedGeometry.toText();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.geowe.service.geometry.engine.GeoEngineer#calculateOverlapedUnion(org
+	 * .geowe.service.model.OperationData)
+	 */
+	// TODO: think a better solution for calculate Flat Geometries
+	@Override
+	public List<FlatGeometry> calculateOverlapedUnion(OperationData operationData) {
+
+		operationData.getSourceData().addAll(operationData.getOverlayData());
+		final List<Geometry> linesList = new ArrayList<Geometry>();
+		final LinearComponentExtracter lineFilter = new LinearComponentExtracter(linesList);
+		for (final FlatGeometry flatGeometry : operationData.getSourceData()) {
+			final Geometry geom = helper.getGeom(flatGeometry.getWkt());
+			geom.apply(lineFilter);
+		}
+		LineNoder lineNoder = new LineNoder();
+		final Collection<Geometry> polys = lineNoder.polygonizer(lineNoder.nodeLines(linesList));
+
+		final List<String> overlapedUnionWkts = getOverlapedPolygonsWkt(polys);
+		
+		return getOverlapedUnionFlatGeometries(overlapedUnionWkts, operationData);
+	}
+
+	private List<String> getOverlapedPolygonsWkt(Collection<Geometry> polys) {
+		List<String> wkts = new ArrayList<String>();
+		for (final Geometry geom : polys) {
+			wkts.add(geom.toText());
+		}
+		return wkts;
+	}
+	
+	private List<FlatGeometry> getOverlapedUnionFlatGeometries(List<String> overlapedUnionWkts,OperationData operationData){
+		List<FlatGeometry> overlapedUnionFlatGeometries = helper.getFilledFlatGeometries(
+				operationData.getSourceData(), overlapedUnionWkts, 0.00001);
+		if (overlapedUnionFlatGeometries.size() != overlapedUnionWkts.size()) {
+			overlapedUnionWkts.remove(helper.getWkts(overlapedUnionFlatGeometries));
+			overlapedUnionFlatGeometries.addAll(
+					helper.getFilledFlatGeometries(operationData.getOverlayData(),
+							overlapedUnionWkts, 0.00001));
+		}
+		
+		return overlapedUnionFlatGeometries;
+	}
+
 }

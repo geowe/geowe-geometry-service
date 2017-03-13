@@ -9,6 +9,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Geometry validations
 - Asynchronous tasks
 
+## [0.3.1]SNAPSHOT - 2017-03-11
+
+### Added
+- Implemented resources for JTS operations:
+	- Union: combine
+	- Union: overlap
+
+
 ## [0.2.1]SNAPSHOT - 2017-03-10
 
 ### Added

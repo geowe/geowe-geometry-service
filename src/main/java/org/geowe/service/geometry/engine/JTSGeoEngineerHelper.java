@@ -17,6 +17,7 @@ package org.geowe.service.geometry.engine;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -127,6 +128,14 @@ public class JTSGeoEngineerHelper {
 			fGeoms.add(getIntersectedFlatGeomtetry(intersectedWkt, sourceFlatGeometries, tolerance));
 		}
 		return fGeoms;
+	}
+
+	public Set<String> getWkts(List<FlatGeometry> overlapedUnionFlatGeometries) {
+		Set<String> wkts = new HashSet<String>();
+		for(FlatGeometry flatGeometry: overlapedUnionFlatGeometries){
+			wkts.add(flatGeometry.getWkt());
+		}
+		return wkts;
 	}
 
 }

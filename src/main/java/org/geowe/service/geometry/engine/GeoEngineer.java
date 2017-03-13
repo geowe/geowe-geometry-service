@@ -120,8 +120,8 @@ public interface GeoEngineer {
 	List<FlatGeometry> calculateDifferenceElements(OperationData operationData, double tolerance);
 
 	/**
-	 * Calculates the outline geometry resulting from the Symmetric Difference of
-	 * source and overlay data in entities.
+	 * Calculates the outline geometry resulting from the Symmetric Difference
+	 * of source and overlay data in entities.
 	 * 
 	 * @param entities:
 	 *            Operation data to calculate intersection
@@ -144,7 +144,8 @@ public interface GeoEngineer {
 	List<FlatGeometry> calculateSymDifferenceElements(OperationData operationData, double tolerance);
 
 	/**
-	 * Calculates the geometries in source that intersects with overlay data, sent in the body
+	 * Calculates the geometries in source that intersects with overlay data,
+	 * sent in the body
 	 * 
 	 * @param operationData
 	 *            Operation data to calculate intersection
@@ -153,5 +154,23 @@ public interface GeoEngineer {
 	 * @return A Collection of WKT strings
 	 */
 	List<FlatGeometry> calculateIntersectedElements(OperationData operationData, double tolerance);
+
+	/**
+	 * Combine a collection of FlatGeometry into a new FlatGeometry
+	 * 
+	 * @param entities
+	 * @return
+	 */
+	String combine(Collection<FlatGeometry> entities);
+
+	/**
+	 * Calculate the geometric union of source and overlay data in
+	 * OperantionData
+	 * 
+	 * @param operationData
+	 *            Operation data to calculate Union
+	 * @return
+	 */
+	List<FlatGeometry> calculateOverlapedUnion(OperationData operationData);
 
 }
