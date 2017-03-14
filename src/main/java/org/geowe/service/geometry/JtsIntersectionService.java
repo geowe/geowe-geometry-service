@@ -36,6 +36,7 @@ import org.geowe.service.geometry.engine.JTSGeoEngineer;
 import org.geowe.service.geometry.engine.JTSGeoEngineerHelper;
 import org.geowe.service.model.FlatGeometry;
 import org.geowe.service.model.OperationData;
+import org.geowe.service.model.mapper.FlatGeometryMapper;
 import org.jboss.resteasy.annotations.GZIP;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -72,9 +73,15 @@ public class JtsIntersectionService {
 			@QueryParam("tolerance") @DefaultValue("-0.00001") double tolerance) {
 		GeoEngineer geoEngineer = new JTSGeoEngineer();
 
-		List<FlatGeometry> elements = geoEngineer.calculateIntersectionElements(operationData, tolerance);
-
-		return Response.status(Status.CREATED).entity(elements).build();
+		List<String> elements = geoEngineer.calculateIntersectionElements(operationData, tolerance);
+		return Response.status(Status.CREATED)
+				.entity(getFlatGeometries(operationData.getSourceData(), elements))
+				.build();
+	}
+	
+	private List<FlatGeometry> getFlatGeometries(Set<FlatGeometry> flatGeometries, List<String> wkts){
+		FlatGeometryMapper mapper = new FlatGeometryMapper();
+		return mapper.getFilledFlatGeometries(flatGeometries, wkts, 0.000001);
 	}
 
 }

@@ -9,6 +9,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Geometry validations
 - Asynchronous tasks
 
+## [0.4.1]SNAPSHOT - 2017-03-14
+
+### Added
+- Implemented resources for JTS operations:
+	- Divide Polygons
+
 ## [0.3.1]SNAPSHOT - 2017-03-11
 
 ### Added

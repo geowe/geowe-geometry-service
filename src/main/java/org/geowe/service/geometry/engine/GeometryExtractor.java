@@ -1,20 +1,25 @@
 package org.geowe.service.geometry.engine;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.util.LineStringExtracter;
+import com.vividsolutions.jts.operation.polygonize.Polygonizer;
 
 /**
- * This class represents a Geometry extractor. It is responsible to
- * extract basic geometries form Multi Geoms.
+ * This class represents a Geometry extractor. It is responsible to extract
+ * basic geometries form Multi Geoms.
+ * 
  * @author rafa@geowe.org
  *
  */
@@ -59,5 +64,21 @@ public class GeometryExtractor {
 			geomsWkt.add(geometry.toText());
 		}
 		return geomsWkt;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<Geometry> polygonize(Geometry geometry) {
+		List<Geometry> lines = LineStringExtracter.getLines(geometry);
+		Polygonizer polygonizer = new Polygonizer();
+		polygonizer.add(lines);
+		Collection<Geometry> polys = polygonizer.getPolygons();
+		return polys;
+		
+	}
+	
+	public Geometry createGeometryCollection(Collection<Geometry> geometries){
+		Geometry[] geomArray = GeometryFactory.toGeometryArray(geometries);
+		GeometryFactory factory = new GeometryFactory();
+		return factory.createGeometryCollection(geomArray);
 	}
 }

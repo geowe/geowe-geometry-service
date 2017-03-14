@@ -93,7 +93,7 @@ public interface GeoEngineer {
 	 *            tolerance to apply.
 	 * @return A Collection of WKT strings
 	 */
-	List<FlatGeometry> calculateIntersectionElements(OperationData entities, double tolerance);
+	List<String> calculateIntersectionElements(OperationData entities, double tolerance);
 
 	/**
 	 * Calculates the outline geometry resulting from the Difference of source
@@ -117,7 +117,7 @@ public interface GeoEngineer {
 	 *            tolerance to apply.
 	 * @return A Collection of WKT strings
 	 */
-	List<FlatGeometry> calculateDifferenceElements(OperationData operationData, double tolerance);
+	List<String> calculateDifferenceElements(OperationData operationData, double tolerance);
 
 	/**
 	 * Calculates the outline geometry resulting from the Symmetric Difference
@@ -141,7 +141,7 @@ public interface GeoEngineer {
 	 *            tolerance to apply.
 	 * @return A Collection of WKT strings
 	 */
-	List<FlatGeometry> calculateSymDifferenceElements(OperationData operationData, double tolerance);
+	List<String> calculateSymDifferenceElements(OperationData operationData, double tolerance);
 
 	/**
 	 * Calculates the geometries in source that intersects with overlay data,
@@ -151,7 +151,7 @@ public interface GeoEngineer {
 	 *            Operation data to calculate intersection
 	 * @param tolerance:
 	 *            tolerance to apply.
-	 * @return A Collection of WKT strings
+	 * @return A Collection of FlatGeometry
 	 */
 	List<FlatGeometry> calculateIntersectedElements(OperationData operationData, double tolerance);
 
@@ -159,7 +159,9 @@ public interface GeoEngineer {
 	 * Combine a collection of FlatGeometry into a new FlatGeometry
 	 * 
 	 * @param entities
-	 * @return
+	 *            Collection of FlatGeometry to calculate Union.
+	 * 
+	 * @return WKT string
 	 */
 	String combine(Collection<FlatGeometry> entities);
 
@@ -171,6 +173,17 @@ public interface GeoEngineer {
 	 *            Operation data to calculate Union
 	 * @return
 	 */
-	List<FlatGeometry> calculateOverlapedUnion(OperationData operationData);
+	List<String> calculateOverlapedUnion(OperationData operationData);
+
+	/**
+	 * Divide a collection of Polygons in source data with a line in overlay
+	 * data
+	 * 
+	 * @param operationData
+	 *            Operation data to calculate division. operationData.source:
+	 *            polygons to divide operationData.overlay: division line
+	 * @return
+	 */
+	List<String> dividePolygons(OperationData operationData);
 
 }

@@ -21,13 +21,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.geowe.service.geometry.FlatGeometryBuilder;
 import org.geowe.service.model.FlatGeometry;
 import org.jboss.logging.Logger;
 import org.jboss.resteasy.spi.ReaderException;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPoint;
@@ -107,28 +107,6 @@ public class JTSGeoEngineerHelper {
 		return intersects;
 	}
 
-	public FlatGeometry getIntersectedFlatGeomtetry(String wkt, Set<FlatGeometry> sourceFlatGeometries,
-			double tolerance) {
-		FlatGeometry intersectedFlatGeom = new FlatGeometryBuilder().wkt(wkt).build();
-		for (FlatGeometry flatGeometry : sourceFlatGeometries) {
-			if (getGeom(wkt).intersects(getGeom(flatGeometry.getWkt()).buffer(tolerance))) {
-				intersectedFlatGeom.setCrs(flatGeometry.getCrs());
-				intersectedFlatGeom.setId(flatGeometry.getId());
-				break;
-			}
-		}
-		return intersectedFlatGeom;
-	}
-	
-	public List<FlatGeometry> getFilledFlatGeometries(Set<FlatGeometry> sourceFlatGeometries,
-			List<String> intersectedWkts, double tolerance) {
-		List<FlatGeometry> fGeoms = new ArrayList<FlatGeometry>();
-
-		for (String intersectedWkt : intersectedWkts) {
-			fGeoms.add(getIntersectedFlatGeomtetry(intersectedWkt, sourceFlatGeometries, tolerance));
-		}
-		return fGeoms;
-	}
 
 	public Set<String> getWkts(List<FlatGeometry> overlapedUnionFlatGeometries) {
 		Set<String> wkts = new HashSet<String>();
@@ -138,4 +116,20 @@ public class JTSGeoEngineerHelper {
 		return wkts;
 	}
 
+	 public Geometry splitPolygon(Geometry poly, Geometry line) {
+	      Geometry nodedLinework = poly.getBoundary().union(line);
+	      GeometryExtractor geometryExtractor = new GeometryExtractor(); 
+	      Collection<Geometry> geometries = geometryExtractor.polygonize(nodedLinework);
+	      Geometry polys = geometryExtractor.createGeometryCollection(geometries);
+	      
+	      // Only keep polygons which are inside the input
+	      List<Geometry> output = new ArrayList<Geometry>();
+	      for (int i = 0; i < polys.getNumGeometries(); i++) {
+	          Polygon candpoly = (Polygon) polys.getGeometryN(i);
+	          if (poly.contains(candpoly.getInteriorPoint())) {
+	              output.add(candpoly);
+	          }
+	      }
+	      return poly.getFactory().createGeometryCollection(GeometryFactory.toGeometryArray(output));
+	  }
 }

@@ -22,7 +22,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.geowe.service.messages.Messages;
 import org.geowe.service.messages.Messages.Bundle;
-
+//TODO: create and complete errors
 public class ErrorEntityFactory {
 
 	private final Messages errorMessages;
@@ -82,6 +82,21 @@ public class ErrorEntityFactory {
 		error.setTitle(errorMessages.getMessage("internal.server.error"));
 		error.setDetail(exception.getMessage());
 		error.setSource(exception.getCause().getLocalizedMessage());
+		error.setLink("TODO: Error documentation");
+
+		return error;
+	}
+	
+	public ErrorEntity getTopologyError(Exception exception,
+			HttpServletRequest request) {
+		ErrorEntity error = new ErrorEntity();
+		error.setId(409);
+		error.setStatus(String.valueOf(Status.CONFLICT.getStatusCode()));
+		error.setCode("BR.409");
+		error.setTitle(errorMessages.getMessage("topology.error"));
+		error.setDetail(exception.getMessage());
+		error.setSource(request.getRequestURI() + ": "
+				+ exception.getCause());
 		error.setLink("TODO: Error documentation");
 
 		return error;

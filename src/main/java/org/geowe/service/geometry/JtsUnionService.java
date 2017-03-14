@@ -20,11 +20,9 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -33,6 +31,7 @@ import org.geowe.service.geometry.engine.GeoEngineer;
 import org.geowe.service.geometry.engine.JTSGeoEngineer;
 import org.geowe.service.model.FlatGeometry;
 import org.geowe.service.model.OperationData;
+import org.geowe.service.model.mapper.FlatGeometryMapper;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.jboss.resteasy.annotations.GZIP;
 
@@ -59,7 +58,7 @@ public class JtsUnionService {
 
 		return Response.status(Status.CREATED).entity(unionFlatGeometry).build();
 	}
-	
+
 	@Path("/combined")
 	@POST
 	@GZIP
@@ -81,9 +80,16 @@ public class JtsUnionService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getUnionOverlap(@NotNull @Valid OperationData operationData) {
 		GeoEngineer geoEngineer = new JTSGeoEngineer();
-		List<FlatGeometry> elements = geoEngineer.calculateOverlapedUnion(operationData);
+		List<String> elements = geoEngineer.calculateOverlapedUnion(operationData);
 
-		return Response.status(Status.CREATED).entity(elements).build();
+		return Response.status(Status.CREATED)
+				.entity(getFlatGeometries(operationData, elements))
+				.build();
+	}
+
+	private List<FlatGeometry> getFlatGeometries(OperationData operationData, List<String> wkts) {
+		FlatGeometryMapper mapper = new FlatGeometryMapper();
+		return mapper.getOverlapedUnionFlatGeometries(wkts, operationData);
 	}
 
 }

@@ -16,6 +16,7 @@
 package org.geowe.service.geometry;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -33,6 +34,7 @@ import org.geowe.service.geometry.engine.GeoEngineer;
 import org.geowe.service.geometry.engine.JTSGeoEngineer;
 import org.geowe.service.model.FlatGeometry;
 import org.geowe.service.model.OperationData;
+import org.geowe.service.model.mapper.FlatGeometryMapper;
 import org.jboss.resteasy.annotations.GZIP;
 
 /**
@@ -65,9 +67,16 @@ public class JtsSymDifferenceService {
 	public Response getDifferenceElements(@NotNull @Valid OperationData operationData,
 			@QueryParam("tolerance") @DefaultValue("-0.00001") double tolerance) {
 		GeoEngineer geoEngineer = new JTSGeoEngineer();
-		List<FlatGeometry> elements = geoEngineer.calculateSymDifferenceElements(operationData, tolerance);
-
-		return Response.status(Status.CREATED).entity(elements).build();
+		List<String> elements = geoEngineer.calculateSymDifferenceElements(operationData, tolerance);
+		
+		return Response.status(Status.CREATED)
+				.entity(getFlatGeometries(operationData.getSourceData(), elements))
+				.build();
+	}
+	
+	private List<FlatGeometry> getFlatGeometries(Set<FlatGeometry> flatGeometries, List<String> wkts){
+		FlatGeometryMapper mapper = new FlatGeometryMapper();
+		return mapper.getFilledFlatGeometries(flatGeometries, wkts, 0.000001);
 	}
 
 }
