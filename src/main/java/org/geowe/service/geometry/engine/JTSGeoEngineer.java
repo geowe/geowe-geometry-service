@@ -260,4 +260,13 @@ public class JTSGeoEngineer implements GeoEngineer {
 		return helper.getBasicGeometries(splitedPolygons.toText());
 	}
 
+	@Override
+	public List<String> divideLines(OperationData operationData) {
+		Geometry sourceLines = helper.getGeom(combine(operationData.getSourceData()));
+		Geometry divisionLine = helper.getGeom(combine(operationData.getOverlayData()));
+		Geometry unionGeom = sourceLines.union(divisionLine);
+		
+		return helper.splitLines(sourceLines, unionGeom);
+	}
+
 }

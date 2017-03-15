@@ -233,15 +233,28 @@ types: !include ggs-types.raml
 					body:					
 						application/json:
 							type: FlatGeometry[]
-	/division/polygons:				
-		post:
-			description: Calculates the divided polygons in source that overlay can divide.
-			mediaType: application/json				
-			body:
-				type: OperationData	
-				description: sourceData: a collection of polygons. OverlayData: a LineString				
-			responses:
-				201: 
-					body:					
-						application/json:
-							type: FlatGeometry[]
+	/division:
+		/polygons:				
+			post:
+				description: Calculates the divided polygons in source that overlay can divide.
+				mediaType: application/json				
+				body:
+					type: OperationData	
+					description: sourceData: a collection of polygons. OverlayData: a LineString			
+				responses:
+					201: 
+						body:					
+							application/json:
+								type: FlatGeometry[]
+		/lines:				
+			post:
+				description: Calculates the divided lines in source that overlay can divide.
+				mediaType: application/json				
+				body:
+					type: OperationData	
+					description: sourceData: a collection of LineString (not crossed). OverlayData: a LineString
+				responses:
+					201: 
+						body:					
+							application/json:
+								type: FlatGeometry[]

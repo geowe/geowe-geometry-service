@@ -43,6 +43,7 @@ public class LineNoder {
 		return point;
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected Collection<Geometry> polygonizer(final Collection<Geometry> nodedLines) {
 		final Polygonizer polygonizer = new Polygonizer();		
 		polygonizer.add(nodedLines);

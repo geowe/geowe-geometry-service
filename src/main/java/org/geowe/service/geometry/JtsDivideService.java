@@ -52,12 +52,26 @@ public class JtsDivideService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@DivisionFilter
-	public Response divide(@NotNull @Valid OperationData operationData) {
+	public Response dividePolygons(@NotNull @Valid OperationData operationData) {
 		GeoEngineer geoEngineer = new JTSGeoEngineer();
 		List<String> dividedPolygons = geoEngineer.dividePolygons(operationData);
 		
 		return Response.status(Status.CREATED)
 				.entity(getFlatGeometries(operationData.getSourceData(), dividedPolygons))
+				.build();
+	}
+	
+	@Path("/lines")
+	@POST
+	@GZIP
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@DivisionFilter
+	public Response divideLines(@NotNull @Valid OperationData operationData) {
+		GeoEngineer geoEngineer = new JTSGeoEngineer();
+		List<String> dividedLines = geoEngineer.divideLines(operationData);
+		return Response.status(Status.CREATED)
+				.entity(getFlatGeometries(operationData.getSourceData(), dividedLines))
 				.build();
 	}
 	

@@ -9,6 +9,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Geometry validations
 - Asynchronous tasks
 
+## [0.5.0]SNAPSHOT - 2017-03-15
+
+### Added
+- Implemented resources for JTS operations:
+	- Divide LineString (not supported division for crossed linestrings)
+	
 ## [0.4.1]SNAPSHOT - 2017-03-14
 
 ### Added

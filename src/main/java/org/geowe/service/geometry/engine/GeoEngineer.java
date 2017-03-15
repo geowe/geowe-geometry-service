@@ -181,9 +181,20 @@ public interface GeoEngineer {
 	 * 
 	 * @param operationData
 	 *            Operation data to calculate division. operationData.source:
-	 *            polygons to divide operationData.overlay: division line
+	 *            polygons to divide. operationData.overlay: division line
 	 * @return
 	 */
 	List<String> dividePolygons(OperationData operationData);
+
+	/**
+	 * Divide a collection of LineStrings in source data with a line in overlay
+	 * data
+	 * 
+	 * @param operationData
+	 *            Operation data to calculate division. operationData.source:
+	 *            lineStrings to divide.  operationData.overlay: division line
+	 * @return
+	 */
+	List<String> divideLines(OperationData operationData);
 
 }

@@ -107,29 +107,49 @@ public class JTSGeoEngineerHelper {
 		return intersects;
 	}
 
-
 	public Set<String> getWkts(List<FlatGeometry> overlapedUnionFlatGeometries) {
 		Set<String> wkts = new HashSet<String>();
-		for(FlatGeometry flatGeometry: overlapedUnionFlatGeometries){
+		for (FlatGeometry flatGeometry : overlapedUnionFlatGeometries) {
 			wkts.add(flatGeometry.getWkt());
 		}
 		return wkts;
 	}
+	
+	public Geometry splitPolygon(Geometry poly, Geometry line) {
+		Geometry nodedLinework = poly.getBoundary().union(line);
+		GeometryExtractor geometryExtractor = new GeometryExtractor();
+		Collection<Geometry> geometries = geometryExtractor.polygonize(nodedLinework);
+		Geometry polys = geometryExtractor.createGeometryCollection(geometries);
 
-	 public Geometry splitPolygon(Geometry poly, Geometry line) {
-	      Geometry nodedLinework = poly.getBoundary().union(line);
-	      GeometryExtractor geometryExtractor = new GeometryExtractor(); 
-	      Collection<Geometry> geometries = geometryExtractor.polygonize(nodedLinework);
-	      Geometry polys = geometryExtractor.createGeometryCollection(geometries);
-	      
-	      // Only keep polygons which are inside the input
-	      List<Geometry> output = new ArrayList<Geometry>();
-	      for (int i = 0; i < polys.getNumGeometries(); i++) {
-	          Polygon candpoly = (Polygon) polys.getGeometryN(i);
-	          if (poly.contains(candpoly.getInteriorPoint())) {
-	              output.add(candpoly);
-	          }
-	      }
-	      return poly.getFactory().createGeometryCollection(GeometryFactory.toGeometryArray(output));
-	  }
+		// Only keep polygons which are inside the input
+		List<Geometry> output = new ArrayList<Geometry>();
+		for (int i = 0; i < polys.getNumGeometries(); i++) {
+			Polygon candpoly = (Polygon) polys.getGeometryN(i);
+			if (poly.contains(candpoly.getInteriorPoint())) {
+				output.add(candpoly);
+			}
+		}
+		// TODO: consider return the geometry list or wkt list
+		return poly.getFactory().createGeometryCollection(GeometryFactory.toGeometryArray(output));
+	}
+
+	public List<String> splitLines(Geometry sourceLines, Geometry unionGeom) {
+		GeometryExtractor extractor = new GeometryExtractor();
+		List<LineString> lines = extractor.linealize(unionGeom);
+
+		List<Geometry> segments = getSegments(sourceLines, lines);
+		return extractor.getWkts(segments);
+	}
+
+	private List<Geometry> getSegments(Geometry sourceLines, List<LineString> lines) {
+		List<Geometry> segments = new ArrayList<Geometry>();
+		for (LineString line : lines) {
+			if (sourceLines.intersects(line) && !line.crosses(sourceLines)) {
+				segments.add(line);
+			}
+		}
+		return segments;
+	}
+
+	
 }

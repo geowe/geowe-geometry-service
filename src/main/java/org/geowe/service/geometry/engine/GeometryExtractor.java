@@ -14,6 +14,7 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.util.LineStringExtracter;
+import com.vividsolutions.jts.geom.util.LinearComponentExtracter;
 import com.vividsolutions.jts.operation.polygonize.Polygonizer;
 
 /**
@@ -76,9 +77,23 @@ public class GeometryExtractor {
 		
 	}
 	
+	public List<LineString> linealize(Geometry geometry){
+		LinearComponentExtracter extracter = new LinearComponentExtracter(
+				getLineStrings((MultiLineString) geometry));
+		return extracter.getLines(geometry);
+	}
+	
 	public Geometry createGeometryCollection(Collection<Geometry> geometries){
 		Geometry[] geomArray = GeometryFactory.toGeometryArray(geometries);
 		GeometryFactory factory = new GeometryFactory();
 		return factory.createGeometryCollection(geomArray);
+	}
+	
+	public List<String> getWkts(Collection<Geometry> geometries) {
+		List<String> wkts = new ArrayList<String>();
+		for (Geometry geometry : geometries) {
+			wkts.add(geometry.toText());
+		}
+		return wkts;
 	}
 }
