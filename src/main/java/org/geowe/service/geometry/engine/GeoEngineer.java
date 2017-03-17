@@ -193,7 +193,7 @@ public interface GeoEngineer {
 	List<String> divideLine(DivisionData divisionData);
 	
 	/**
-	 * Decompones a Multi Geometry into its basic geometries
+	 * Decomposes a Multi Geometry into its basic geometries
 	 * @param flatGeometry
 	 * @return
 	 */

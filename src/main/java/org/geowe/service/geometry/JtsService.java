@@ -15,8 +15,6 @@
  ******************************************************************************/
 package org.geowe.service.geometry;
 
-import java.util.List;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.executable.ValidateOnExecution;
@@ -33,7 +31,6 @@ import javax.ws.rs.core.Response.Status;
 import org.geowe.service.geometry.engine.GeoEngineer;
 import org.geowe.service.geometry.engine.JTSGeoEngineer;
 import org.geowe.service.model.FlatGeometry;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.jboss.resteasy.annotations.GZIP;
 
 /**

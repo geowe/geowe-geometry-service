@@ -15,7 +15,6 @@
  ******************************************************************************/
 package org.geowe.service.geometry;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -33,18 +32,15 @@ import javax.ws.rs.core.Response.Status;
 
 import org.geowe.service.geometry.engine.GeoEngineer;
 import org.geowe.service.geometry.engine.JTSGeoEngineer;
-import org.geowe.service.geometry.engine.JTSGeoEngineerHelper;
 import org.geowe.service.model.FlatGeometry;
 import org.geowe.service.model.OperationData;
 import org.geowe.service.model.mapper.FlatGeometryMapper;
 import org.jboss.resteasy.annotations.GZIP;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
  * Rest end point for JTS Intersection operations resources
  * 
- * @author lotor
+ * @author rafa@geowe.org
  *
  */
 @Path("/jts/intersection")
@@ -54,7 +50,6 @@ public class JtsIntersectionService {
 	@GZIP
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	// @IntersectionFilter
 	public Response getIntersection(@NotNull @Valid OperationData operationData,
 			@QueryParam("tolerance") @DefaultValue("-0.00001") double tolerance) {
 		GeoEngineer geoEngineer = new JTSGeoEngineer();

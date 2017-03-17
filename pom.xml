@@ -3,13 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geowe.service</groupId>
 	<artifactId>geowe-geometry-service</artifactId>
-	<version>0.7.0-SNAPSHOT</version>
+	<version>0.7.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>geowe-geometry-service</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<resteasy-version>3.1.1.Final</resteasy-version>
-		<JAVA_1_8_HOME>/your-java8-path/</JAVA_1_8_HOME>
+		<JAVA_1_8_HOME>/your-java8-path</JAVA_1_8_HOME>
 		<maven.test.skip>true</maven.test.skip>
 	</properties>
 	<dependencies>

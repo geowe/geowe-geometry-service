@@ -256,9 +256,7 @@ public class JTSGeoEngineer implements GeoEngineer {
 	public List<String> dividePolygon(DivisionData divisionData) {
 		Geometry polygon = helper.getGeom(divisionData.getGeomToDivide().getWkt());
 		Geometry line = helper.getGeom(divisionData.getDivisionLine().getWkt());
-		Geometry splitedPolygons = helper.splitPolygon(polygon, line); 
-				
-		return helper.getBasicGeometries(splitedPolygons.toText());
+		return 	helper.splitPolygon(polygon, line);
 	}
 
 	/*

@@ -65,7 +65,7 @@ public class DivisionTest {
 		DivisionData divisionData = new DivisionData();
 		divisionData.setDivisionLine(getFlatGeometry(DIVISION_LINE_WKT));
 		divisionData.setGeomToDivide(getFlatGeometry(LINE_WKT));
-		printDivisionData(divisionData);
+		
 		target = restClient.target(SERVICE_URL + "/line");
 		Response response = target.request()
 				.post(Entity.entity(divisionData, "application/json;charset=UTF-8"));
@@ -115,7 +115,6 @@ public class DivisionTest {
 		DivisionData divisionData = new DivisionData();
 		divisionData.setDivisionLine(getFlatGeometry(LINE_WKT));
 		divisionData.setGeomToDivide(getFlatGeometry(POLYGON_WKT));
-		printDivisionData(divisionData);
 		target = restClient.target(SERVICE_URL + "/polygon");
 		Response response = target.request()
 				.post(Entity.entity(divisionData, "application/json;charset=UTF-8"));
@@ -123,7 +122,6 @@ public class DivisionTest {
 		List<FlatGeometry> dividedGeometries = response
 				.readEntity(new GenericType<List<FlatGeometry>>() {});
 		response.close();
-		
 		Assert.isTrue(response.getStatus() == Status.CREATED.getStatusCode());
 		Assert.isTrue(dividedGeometries.size() == 2);
 	}
@@ -163,7 +161,6 @@ public class DivisionTest {
 		try {
 			log.info(mapper.writeValueAsString(divisionData));
 		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
