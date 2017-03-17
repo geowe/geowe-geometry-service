@@ -66,7 +66,7 @@ types:
 			crs: string
 			wkt: string
 		example:{
-					"id":"my-id"
+					"id":"my-id",
 					"crs": "WGS84",
 					"wkt":"POLYGON ((-4.7764560451359985 37.73318649600941, ...))"
 				}
@@ -89,6 +89,18 @@ types:
 							{"id":"id-2","crs":"WGS84","wkt":"POLYGON((-4.634513854980469 37.63147161675051,...))"},
 							{"id":"id-3","crs":"WGS84","wkt":"POLYGON((-4.7577667236328125 37.636202454188854,...))"},
 							{"id":"id-4","crs":"WGS84","wkt":"POLYGON((-4.7687530517578125 37.633483617951576,...))"}]
+		}
+		
+	DivisionData:
+		type: object
+		properties:
+			geomToDivide:
+				type: FlatGeometry				
+			divisionLine:
+				type: FlatGeometry
+		example:{
+			"geomToDivide":{"id":"id-0",crs":"WGS84","wkt":"POLYGON((-4.7577667236328125 37.636202454188854,...))"},
+			"divisionLine":{"id":"id-0",crs":"WGS84","wkt":"LINESTRING (-6.210259817917375 38.259416305016615,...)"}
 		}
 
 	ErrorEntity:

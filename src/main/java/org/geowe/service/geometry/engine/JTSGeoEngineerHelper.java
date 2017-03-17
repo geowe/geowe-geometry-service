@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.geowe.service.model.FlatGeometry;
@@ -32,7 +33,6 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
@@ -51,8 +51,7 @@ public class JTSGeoEngineerHelper {
 	public Geometry getGeom(String wkt) {
 		Geometry geom;
 		try {
-			WKTReader wktReader = new WKTReader();
-			geom = wktReader.read(wkt);
+			geom = new WKTReader().read(wkt);
 		} catch (ParseException e) {
 			throw new ReaderException("Error Reading wkt");
 		}
@@ -61,10 +60,7 @@ public class JTSGeoEngineerHelper {
 
 	public List<Geometry> toGeometries(Collection<FlatGeometry> entities) {
 		List<Geometry> geometries = new ArrayList<Geometry>();
-		for (FlatGeometry flatGeometry : entities) {
-			geometries.add(getGeom(flatGeometry.getWkt()));
-		}
-
+		entities.forEach(flatGeometry -> geometries.add(getGeom(flatGeometry.getWkt())));
 		return geometries;
 	}
 
@@ -75,20 +71,28 @@ public class JTSGeoEngineerHelper {
 
 		if (geomContorno != null && geomContorno.isValid()) {
 			GeometryExtractor extractor = new GeometryExtractor();
-			if (geomContorno instanceof Polygon) {
+			switch (geomContorno.getGeometryType()) {
+			case "Polygon":
 				elementsWkt.add(geomContorno.toText());
-			} else if (geomContorno instanceof MultiPolygon) {
+				break;
+			case "MultiPolygon":
 				elementsWkt.addAll(extractor.getPolygons((MultiPolygon) geomContorno));
-			} else if (geomContorno instanceof LineString) {
+				break;
+			case "LineString":
 				elementsWkt.add(geomContorno.toText());
-			} else if (geomContorno instanceof MultiLineString) {
+				break;
+			case "MultiLineString":
 				elementsWkt.addAll(extractor.getLineStrings((MultiLineString) geomContorno));
-			} else if (geomContorno instanceof Point) {
+				break;
+			case "Point":
 				elementsWkt.add(geomContorno.toText());
-			} else if (geomContorno instanceof MultiPoint) {
+				break;
+			case "MultiPoint":
 				elementsWkt.addAll(extractor.getPoints((MultiPoint) geomContorno));
-			} else if (geomContorno instanceof GeometryCollection) {
+				break;
+			default:
 				elementsWkt.addAll(extractor.getMultiGeometries((GeometryCollection) geomContorno));
+				break;
 			}
 		}
 		return elementsWkt;
@@ -96,25 +100,26 @@ public class JTSGeoEngineerHelper {
 
 	public boolean intersects(final FlatGeometry fgeomToIntersect, final Collection<FlatGeometry> flatGeometries,
 			double tolerance) {
-		boolean intersects = false;
 		Geometry geom = getGeom(fgeomToIntersect.getWkt());
-		for (final FlatGeometry flatGeometry : flatGeometries) {
-			if (geom.buffer(tolerance).intersects(getGeom(flatGeometry.getWkt()).buffer(tolerance))) {
-				intersects = true;
-				break;
-			}
-		}
-		return intersects;
+		Optional<FlatGeometry> opt = flatGeometries.stream().filter(
+				flatGeometry -> (geom.buffer(tolerance).intersects(getGeom(flatGeometry.getWkt()).buffer(tolerance))))
+				.findFirst();
+
+		return opt.isPresent();
 	}
 
 	public Set<String> getWkts(List<FlatGeometry> overlapedUnionFlatGeometries) {
 		Set<String> wkts = new HashSet<String>();
-		for (FlatGeometry flatGeometry : overlapedUnionFlatGeometries) {
-			wkts.add(flatGeometry.getWkt());
-		}
+		overlapedUnionFlatGeometries.forEach(flatGeometry -> wkts.add(flatGeometry.getWkt()));
 		return wkts;
 	}
 	
+	public List<String> getWkts(Collection<Geometry> geometries) {
+		List<String> wkts = new ArrayList<String>();
+		geometries.forEach(geometry -> wkts.add(geometry.toText()));
+		return wkts;
+	}
+
 	public Geometry splitPolygon(Geometry poly, Geometry line) {
 		Geometry nodedLinework = poly.getBoundary().union(line);
 		GeometryExtractor geometryExtractor = new GeometryExtractor();
@@ -138,18 +143,16 @@ public class JTSGeoEngineerHelper {
 		List<LineString> lines = extractor.linealize(unionGeom);
 
 		List<Geometry> segments = getSegments(sourceLines, lines);
-		return extractor.getWkts(segments);
+		return getWkts(segments);
 	}
 
 	private List<Geometry> getSegments(Geometry sourceLines, List<LineString> lines) {
 		List<Geometry> segments = new ArrayList<Geometry>();
-		for (LineString line : lines) {
+		lines.forEach(line -> {
 			if (sourceLines.intersects(line) && !line.crosses(sourceLines)) {
 				segments.add(line);
 			}
-		}
+		});
 		return segments;
 	}
-
-	
 }

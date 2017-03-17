@@ -15,8 +15,8 @@
  ******************************************************************************/
 package org.geowe.service.geometry;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -31,9 +31,8 @@ import javax.ws.rs.core.Response.Status;
 import org.geowe.service.filter.DivisionFilter;
 import org.geowe.service.geometry.engine.GeoEngineer;
 import org.geowe.service.geometry.engine.JTSGeoEngineer;
+import org.geowe.service.model.DivisionData;
 import org.geowe.service.model.FlatGeometry;
-import org.geowe.service.model.OperationData;
-import org.geowe.service.model.mapper.FlatGeometryMapper;
 import org.jboss.resteasy.annotations.GZIP;
 
 /**
@@ -46,39 +45,55 @@ import org.jboss.resteasy.annotations.GZIP;
 public class JtsDivideService {
 
 	
-	@Path("/polygons")
 	@POST
 	@GZIP
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	@DivisionFilter
-	public Response dividePolygons(@NotNull @Valid OperationData operationData) {
+	public Response divide(@NotNull @Valid FlatGeometry flatGeometry) {
 		GeoEngineer geoEngineer = new JTSGeoEngineer();
-		List<String> dividedPolygons = geoEngineer.dividePolygons(operationData);
-		
-		return Response.status(Status.CREATED)
-				.entity(getFlatGeometries(operationData.getSourceData(), dividedPolygons))
-				.build();
-	}
-	
-	@Path("/lines")
-	@POST
-	@GZIP
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	@DivisionFilter
-	public Response divideLines(@NotNull @Valid OperationData operationData) {
-		GeoEngineer geoEngineer = new JTSGeoEngineer();
-		List<String> dividedLines = geoEngineer.divideLines(operationData);
-		return Response.status(Status.CREATED)
-				.entity(getFlatGeometries(operationData.getSourceData(), dividedLines))
-				.build();
-	}
-	
-	private List<FlatGeometry> getFlatGeometries(Set<FlatGeometry> flatGeometries, List<String> wkts){
-		FlatGeometryMapper mapper = new FlatGeometryMapper();
-		return mapper.getFilledFlatGeometries(flatGeometries, wkts, 0.000001);
-	}
-	
-}
+		List<String> dividedGeometries = geoEngineer.decompose(flatGeometry.getWkt());
 
+		return Response.status(Status.CREATED)
+				.entity(getFlatGeometries(dividedGeometries, flatGeometry))
+				.build();
+	}
+	
+	
+	@Path("/polygon")
+	@POST
+	@GZIP
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@DivisionFilter
+	public Response dividePolygons(@NotNull @Valid DivisionData divisionData) {
+		GeoEngineer geoEngineer = new JTSGeoEngineer();
+		List<String> dividedPolygons = geoEngineer.dividePolygon(divisionData);
+
+		return Response.status(Status.CREATED)
+				.entity(getFlatGeometries(dividedPolygons, divisionData.getGeomToDivide()))
+				.build();
+	}
+
+	@Path("/line")
+	@POST
+	@GZIP
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@DivisionFilter
+	public Response divideLine(@NotNull @Valid DivisionData divisionData) {
+		GeoEngineer geoEngineer = new JTSGeoEngineer();
+		List<String> dividedLines = geoEngineer.divideLine(divisionData);
+		return Response.status(Status.CREATED)
+				.entity(getFlatGeometries(dividedLines, divisionData.getGeomToDivide()))
+				.build();
+	}
+
+	private List<FlatGeometry> getFlatGeometries(List<String> dividedWkts, FlatGeometry flatGeometry) {
+		List<FlatGeometry> flatGeometries = new ArrayList<FlatGeometry>();
+		dividedWkts.forEach(wkt -> flatGeometries
+				.add(new FlatGeometryBuilder().id(flatGeometry.getId())
+						.crs(flatGeometry.getCrs()).wkt(wkt).build()));
+		return flatGeometries;
+	}
+
+}

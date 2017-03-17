@@ -18,6 +18,7 @@ package org.geowe.service.geometry.engine;
 import java.util.Collection;
 import java.util.List;
 
+import org.geowe.service.model.DivisionData;
 import org.geowe.service.model.FlatGeometry;
 import org.geowe.service.model.OperationData;
 
@@ -176,25 +177,26 @@ public interface GeoEngineer {
 	List<String> calculateOverlapedUnion(OperationData operationData);
 
 	/**
-	 * Divide a collection of Polygons in source data with a line in overlay
-	 * data
+	 * Divide a Polygon 
 	 * 
-	 * @param operationData
-	 *            Operation data to calculate division. operationData.source:
-	 *            polygons to divide. operationData.overlay: division line
+	 * @param divisionData
 	 * @return
 	 */
-	List<String> dividePolygons(OperationData operationData);
+	List<String> dividePolygon(DivisionData divisionData);
 
 	/**
-	 * Divide a collection of LineStrings in source data with a line in overlay
-	 * data
+	 * Divide a LineString
 	 * 
-	 * @param operationData
-	 *            Operation data to calculate division. operationData.source:
-	 *            lineStrings to divide.  operationData.overlay: division line
+	 * @param divisionData
 	 * @return
 	 */
-	List<String> divideLines(OperationData operationData);
+	List<String> divideLine(DivisionData divisionData);
+	
+	/**
+	 * Decompones a Multi Geometry into its basic geometries
+	 * @param flatGeometry
+	 * @return
+	 */
+	List<String> decompose(String wkt);
 
 }

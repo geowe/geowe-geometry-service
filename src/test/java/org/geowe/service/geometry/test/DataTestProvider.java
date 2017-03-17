@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.geowe.service.geometry.FlatGeometryBuilder;
+import org.geowe.service.geometry.engine.GeometryExtractor;
 import org.geowe.service.geometry.engine.JTSGeoEngineerHelper;
 import org.geowe.service.model.FlatGeometry;
 import org.geowe.service.model.OperationData;
@@ -52,6 +53,12 @@ public class DataTestProvider {
 			throw new ReaderException("Error Reading wkt");
 		}
 		return geom;
+	}
+	
+
+	public Geometry getGeometryCollection(List<FlatGeometry> fgeoms) {
+		return new GeometryExtractor()
+				.createGeometryCollection(new JTSGeoEngineerHelper().toGeometries(fgeoms));
 	}
 	
 	public static List<FlatGeometry> getThreeEntities() {

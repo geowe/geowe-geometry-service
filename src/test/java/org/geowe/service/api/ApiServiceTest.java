@@ -51,5 +51,4 @@ public class ApiServiceTest {
 		Assert.isTrue(response.getStatus() == Status.OK.getStatusCode()
 				&& !jsonString.isEmpty());
 	}
-
 }

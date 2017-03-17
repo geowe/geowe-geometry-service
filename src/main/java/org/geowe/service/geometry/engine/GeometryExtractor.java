@@ -32,7 +32,6 @@ public class GeometryExtractor {
 			final Polygon pol = (Polygon) multiPolygon.getGeometryN(i);
 			polygonsWkt.add(pol.toText());
 		}
-
 		return polygonsWkt;
 	}
 
@@ -43,7 +42,6 @@ public class GeometryExtractor {
 			final LineString pol = (LineString) multiLine.getGeometryN(i);
 			lineStringsWkt.add(pol.toText());
 		}
-
 		return lineStringsWkt;
 	}
 
@@ -72,9 +70,7 @@ public class GeometryExtractor {
 		List<Geometry> lines = LineStringExtracter.getLines(geometry);
 		Polygonizer polygonizer = new Polygonizer();
 		polygonizer.add(lines);
-		Collection<Geometry> polys = polygonizer.getPolygons();
-		return polys;
-		
+		return polygonizer.getPolygons();
 	}
 	
 	public List<LineString> linealize(Geometry geometry){
@@ -87,13 +83,5 @@ public class GeometryExtractor {
 		Geometry[] geomArray = GeometryFactory.toGeometryArray(geometries);
 		GeometryFactory factory = new GeometryFactory();
 		return factory.createGeometryCollection(geomArray);
-	}
-	
-	public List<String> getWkts(Collection<Geometry> geometries) {
-		List<String> wkts = new ArrayList<String>();
-		for (Geometry geometry : geometries) {
-			wkts.add(geometry.toText());
-		}
-		return wkts;
 	}
 }

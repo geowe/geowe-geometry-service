@@ -9,6 +9,27 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Geometry validations
 - Asynchronous tasks
 
+## [0.7.0]SNAPSHOT - 2017-03-17
+
+### Added
+- Implemented resources for JTS operations:
+	- Decompose multi geometry into basic geometry /jts/division
+
+- Divide LineString resource (/jts/division/line) return FlatGeometries
+- Divide Polygon (/jts/division/polygon) return FlatGeometries
+	
+	
+## [0.6.0]SNAPSHOT - 2017-03-16
+
+### Added
+- Implemented resources for JTS operations:
+	- Divide LineString /jts/division/line
+	- Divide Polygon /jts/division/polygon
+
+### Removed
+- Divide LineStrings resource: /jts/division/lines
+- Divide polygons resource: /jts/division/polygons
+
 ## [0.5.0]SNAPSHOT - 2017-03-15
 
 ### Added
