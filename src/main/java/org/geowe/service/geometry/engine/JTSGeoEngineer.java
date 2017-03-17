@@ -62,12 +62,11 @@ public class JTSGeoEngineer implements GeoEngineer {
 	@Override
 	public String calculateUnion(Collection<FlatGeometry> entities) {
 		List<Geometry> geometries = helper.toGeometries(entities);
-		Geometry unionGeom = geometries.get(0).union();
-		for (Geometry geom : geometries) {
-			unionGeom = unionGeom.union(geom);
-		}
+		Geometry geom0 = geometries.get(0).union();
+		Geometry resultGeometry = geometries.stream()
+				.reduce(geom0, (geom1, geom2) -> geom1.union(geom2));
 
-		return unionGeom.toText();
+		return resultGeometry.toText();
 	}
 
 	/*
@@ -235,18 +234,10 @@ public class JTSGeoEngineer implements GeoEngineer {
 		}
 		LineNoder lineNoder = new LineNoder();
 		final Collection<Geometry> polys = lineNoder.polygonizer(lineNoder.nodeLines(linesList));
-
 		
-		return getOverlapedPolygonsWkt(polys);
+		return helper.getWkts(polys);
 	}
 
-	private List<String> getOverlapedPolygonsWkt(Collection<Geometry> polys) {
-		List<String> wkts = new ArrayList<String>();
-		for (final Geometry geom : polys) {
-			wkts.add(geom.toText());
-		}
-		return wkts;
-	}
 	
 	/*
 	 * (non-Javadoc)

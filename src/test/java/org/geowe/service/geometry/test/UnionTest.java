@@ -73,6 +73,7 @@ public class UnionTest {
 
 		FlatGeometry unionGeometry = response.readEntity(FlatGeometry.class);
 		response.close();
+		log.info(unionGeometry);
 		Assert.isTrue(response.getStatus() == Status.CREATED.getStatusCode());
 		Assert.isTrue(UNION_WKT.equals(unionGeometry.getWkt()));
 	}
