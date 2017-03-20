@@ -18,6 +18,7 @@ package org.geowe.service.geometry.engine;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.geowe.service.model.DivisionData;
 import org.geowe.service.model.FlatGeometry;
@@ -63,8 +64,7 @@ public class JTSGeoEngineer implements GeoEngineer {
 	public String calculateUnion(Collection<FlatGeometry> entities) {
 		List<Geometry> geometries = helper.toGeometries(entities);
 		Geometry geom0 = geometries.get(0).union();
-		Geometry resultGeometry = geometries.stream()
-				.reduce(geom0, (geom1, geom2) -> geom1.union(geom2));
+		Geometry resultGeometry = geometries.stream().reduce(geom0, (geom1, geom2) -> geom1.union(geom2));
 
 		return resultGeometry.toText();
 	}
@@ -192,15 +192,11 @@ public class JTSGeoEngineer implements GeoEngineer {
 	 */
 	@Override
 	public List<FlatGeometry> calculateIntersectedElements(OperationData operationData, double tolerance) {
-		final List<FlatGeometry> intersectedElements = new ArrayList<FlatGeometry>();
 		JTSGeoEngineerHelper helper = new JTSGeoEngineerHelper();
-		for (final FlatGeometry flatGeometry : operationData.getSourceData()) {
-			if (helper.intersects(flatGeometry, operationData.getOverlayData(), tolerance)) {
-				intersectedElements.add(flatGeometry);
-			}
-		}
 
-		return intersectedElements;
+		return operationData.getSourceData().stream()
+				.filter(flatGeometry -> helper.intersects(flatGeometry, operationData.getOverlayData(), tolerance))
+				.collect(Collectors.toList());
 	}
 
 	/*
@@ -234,42 +230,48 @@ public class JTSGeoEngineer implements GeoEngineer {
 		}
 		LineNoder lineNoder = new LineNoder();
 		final Collection<Geometry> polys = lineNoder.polygonizer(lineNoder.nodeLines(linesList));
-		
+
 		return helper.getWkts(polys);
 	}
 
-	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geowe.service.geometry.engine.GeoEngineer#dividePolygons(org.geowe.service.model.DivisionData)
+	 * 
+	 * @see
+	 * org.geowe.service.geometry.engine.GeoEngineer#dividePolygons(org.geowe.
+	 * service.model.DivisionData)
 	 */
 	@Override
 	public List<String> dividePolygon(DivisionData divisionData) {
 		Geometry polygon = helper.getGeom(divisionData.getGeomToDivide().getWkt());
 		Geometry line = helper.getGeom(divisionData.getDivisionLine().getWkt());
-		return 	helper.splitPolygon(polygon, line);
+		return helper.splitPolygon(polygon, line);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geowe.service.geometry.engine.GeoEngineer#divideLine(org.geowe.service.model.DivisionData)
+	 * 
+	 * @see org.geowe.service.geometry.engine.GeoEngineer#divideLine(org.geowe.
+	 * service.model.DivisionData)
 	 */
 	@Override
 	public List<String> divideLine(DivisionData divisionData) {
 		Geometry sourceLine = helper.getGeom(divisionData.getGeomToDivide().getWkt());
 		Geometry divisionLine = helper.getGeom(divisionData.getDivisionLine().getWkt());
 		Geometry unionGeom = sourceLine.union(divisionLine);
-		
+
 		return helper.splitLines(sourceLine, unionGeom);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.geowe.service.geometry.engine.GeoEngineer#decompose(java.lang.String)
+	 * 
+	 * @see
+	 * org.geowe.service.geometry.engine.GeoEngineer#decompose(java.lang.String)
 	 */
 	@Override
 	public List<String> decompose(String wkt) {
 		return helper.getBasicGeometries(wkt);
 	}
-	
+
 }
