@@ -148,7 +148,6 @@ public class UnionTest {
 		List<FlatGeometry> overlapedUnionGeometries = response.readEntity(new GenericType<List<FlatGeometry>>(){});
 		response.close();
 		log.info(overlapedUnionGeometries.size());
-		log.info(overlapedUnionGeometries);
 		Assert.isTrue(response.getStatus() == Status.CREATED.getStatusCode());
 		Assert.isTrue(overlapedUnionGeometries.size() == 21);
 	}

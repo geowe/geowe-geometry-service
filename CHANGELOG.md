@@ -9,6 +9,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Geometry validations
 - Asynchronous tasks
 
+## [0.8.0]SNAPSHOT - 2017-03-21
+
+### Added
+- Improve performance in intersects resource (stream parallel processing)
+	
+
+### Removed
+- API resource (OPTIONS)
+
 ## [0.7.0]SNAPSHOT - 2017-03-17
 
 ### Added

@@ -224,10 +224,8 @@ public class JTSGeoEngineer implements GeoEngineer {
 		operationData.getSourceData().addAll(operationData.getOverlayData());
 		final List<Geometry> linesList = new ArrayList<Geometry>();
 		final LinearComponentExtracter lineFilter = new LinearComponentExtracter(linesList);
-		for (final FlatGeometry flatGeometry : operationData.getSourceData()) {
-			final Geometry geom = helper.getGeom(flatGeometry.getWkt());
-			geom.apply(lineFilter);
-		}
+		operationData.getSourceData().forEach(
+				flatGeometry -> helper.getGeom(flatGeometry.getWkt()).apply(lineFilter));
 		LineNoder lineNoder = new LineNoder();
 		final Collection<Geometry> polys = lineNoder.polygonizer(lineNoder.nodeLines(linesList));
 

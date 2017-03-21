@@ -17,10 +17,10 @@ package org.geowe.service.geometry.engine;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.geowe.service.model.FlatGeometry;
 import org.jboss.logging.Logger;
@@ -40,7 +40,7 @@ import com.vividsolutions.jts.io.WKTReader;
  * This class represents the JTSGeoEngineer assistant. It is responsible to
  * perform simple geometries conversions
  * 
- * @author lotor
+ * @author rafa@geowe.org
  *
  */
 public class JTSGeoEngineerHelper {
@@ -58,9 +58,8 @@ public class JTSGeoEngineerHelper {
 	}
 
 	public List<Geometry> toGeometries(Collection<FlatGeometry> entities) {
-		List<Geometry> geometries = new ArrayList<Geometry>();
-		entities.forEach(flatGeometry -> geometries.add(getGeom(flatGeometry.getWkt())));
-		return geometries;
+		return entities.stream().map(flatGeometry -> getGeom(flatGeometry.getWkt()))
+				.collect(Collectors.toList());
 	}
 
 	public List<String> getBasicGeometries(String wkt) {
@@ -100,7 +99,7 @@ public class JTSGeoEngineerHelper {
 	public boolean intersects(final FlatGeometry fgeomToIntersect, final Collection<FlatGeometry> flatGeometries,
 			double tolerance) {
 		Geometry geom = getGeom(fgeomToIntersect.getWkt());
-		Optional<FlatGeometry> opt = flatGeometries.stream().filter(
+		Optional<FlatGeometry> opt = flatGeometries.parallelStream().filter(
 				flatGeometry -> (geom.buffer(tolerance).intersects(getGeom(flatGeometry.getWkt()).buffer(tolerance))))
 				.findFirst();
 
@@ -108,15 +107,13 @@ public class JTSGeoEngineerHelper {
 	}
 
 	public Set<String> getWkts(List<FlatGeometry> overlapedUnionFlatGeometries) {
-		Set<String> wkts = new HashSet<String>();
-		overlapedUnionFlatGeometries.forEach(flatGeometry -> wkts.add(flatGeometry.getWkt()));
-		return wkts;
+		return overlapedUnionFlatGeometries.stream().map(flatGeometry -> flatGeometry.getWkt())
+				.collect(Collectors.toSet());
 	}
-	
+
 	public List<String> getWkts(Collection<Geometry> geometries) {
-		List<String> wkts = new ArrayList<String>();
-		geometries.forEach(geometry -> wkts.add(geometry.toText()));
-		return wkts;
+		return geometries.stream().map(geometry -> geometry.toText())
+				.collect(Collectors.toList());
 	}
 
 	public List<String> splitPolygon(Geometry poly, Geometry line) {

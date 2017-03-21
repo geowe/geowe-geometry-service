@@ -26,10 +26,13 @@ import java.util.Set;
 import org.geowe.service.geometry.FlatGeometryBuilder;
 import org.geowe.service.geometry.engine.GeometryExtractor;
 import org.geowe.service.geometry.engine.JTSGeoEngineerHelper;
+import org.geowe.service.model.DivisionData;
 import org.geowe.service.model.FlatGeometry;
 import org.geowe.service.model.OperationData;
 import org.jboss.resteasy.spi.ReaderException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
@@ -56,7 +59,7 @@ public class DataTestProvider {
 	}
 	
 
-	public Geometry getGeometryCollection(List<FlatGeometry> fgeoms) {
+	public static Geometry getGeometryCollection(List<FlatGeometry> fgeoms) {
 		return new GeometryExtractor()
 				.createGeometryCollection(new JTSGeoEngineerHelper().toGeometries(fgeoms));
 	}
@@ -156,5 +159,5 @@ public class DataTestProvider {
 
 		return operationData;
 	}
-
+	
 }

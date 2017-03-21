@@ -23,6 +23,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.geowe.service.geometry.engine.GeometryExtractor;
 import org.geowe.service.model.FlatGeometry;
 import org.geowe.service.model.OperationData;
 import org.geowe.service.model.error.ErrorEntity;
@@ -33,6 +34,8 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vividsolutions.jts.util.Assert;
 
 public class IntersectTest {
@@ -91,6 +94,7 @@ public class IntersectTest {
 		Assert.isTrue(intersectionGeometries.size() == 6);
 	}
 	
+	
 	@Test
 	public void intersectLinesFeatureCollectionElements(){
 		OperationData opData = DataTestProvider.getLinesFCIntersectionData();
@@ -101,6 +105,16 @@ public class IntersectTest {
 		response.close();
 		Assert.isTrue(response.getStatus() == Status.CREATED.getStatusCode());
 		Assert.isTrue(intersectionGeometries.size() == 2);
+	}
+	
+	
+	private void printOperationData(OperationData data){
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			log.info(mapper.writeValueAsString(data));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
