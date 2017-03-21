@@ -1,18 +1,10 @@
 #%RAML 1.0
 title: GTS API
-version:0.4.1
+version:0.8.0
 protocols: [HTTP, HTTPS]
 baseUri: http://server-url/deployed-app/operations
 mediatype: application/json
 types: !include ggs-types.raml
-/api:
-	options:
-		description: Retrieve specific description for resources (API)
-		responses:
-			200: 
-				body:
-					application/json:
-						type: ResourceDef[]
 /jts:
 	/buffer:
 		post:

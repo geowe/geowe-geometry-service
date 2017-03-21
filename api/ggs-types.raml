@@ -1,124 +1,62 @@
-#%RAML 1.0
-title: GGS TYPES
-version:0.1
+#%RAML 1.0 DataType
+version:0.8.0
 types:
-	ResourceDef:
-		type: object
-		properties:
-			httpMethods:
-				type: string[]
-    			minItems: 1
-    			uniqueItems: true 
-			description: string
-	 		queryParameters: 
-	 			type: ParamDef[]
-	 			uniqueItems: true
-	 		pathParameters: 
-	 			type: ParamDef[]
-	 			uniqueItems: true
-	 		body: BodyDef
-	 		exampleUrl: string
-	 	example: {
-					"httpMethod":["POST"],
-					"description":"calculates the geometry buffer sent in the body",
-					"queryParameters":[{
-						"name":"distance",
-						"description":"buffer to apply (m)",
-						"type":"double",
-						"required":true
-						}]
-					"pathParameters":null
-					"body":{
-						"type":"application/json",
-						"description":"A FlatGeometry object"
-						}
-					"example":"http://your-server/ggs/operations/jts/buffer?distance=20"
-				}
-
-	ParamDef:
-		type: object
-		properties:
-			name: string
-			description: string
-			type: string
-			required: boolean
-		example:{
-					"name":"distance",
-					"description":"buffer to apply (m)",
-					"type":"double",
-					"required":true
-				}
-
-	BodyDef:
-		type: object
-		properties:
-			type: string
-			description: string
-		example:{
-					"type":"application/json",
-					"description":"An Array of FlatGeometry objects"
-				}
-
-	FlatGeometry:
-		type: object
-		properties:
-			id: string
-			crs: string
-			wkt: string
-		example:{
-					"id":"my-id",
-					"crs": "WGS84",
-					"wkt":"POLYGON ((-4.7764560451359985 37.73318649600941, ...))"
-				}
-
+	  FlatGeometry:
+		    type: object
+		    properties:
+			      id:
+        type: string
+			      crs: 
+        type: string
+			      wkt: 
+        type: string
+        required: true
+		    example:{"id":"my-id","crs": "WGS84","wkt":"POLYGON((-4.7764560451359985 37.73318649600941, ...))"				}
 	OperationData:
-		type: object
-		properties:
-			sourceData:
-				type: FlatGeometry[]
-				uniqueItems: true
-			overlayData:
-				type: FlatGeometry[]
-				uniqueItems: true
-		example:{
-			"sourceData":[
-							{"id":"id-0",crs":"WGS84","wkt":"POLYGON((-4.7577667236328125 37.636202454188854,...))"},
-							{"id":"id-1","crs":"WGS84","wkt":"POLYGON((-4.7687530517578125 37.633483617951576,))"}
-						],
-			"overlayData":[
-							{"id":"id-2","crs":"WGS84","wkt":"POLYGON((-4.634513854980469 37.63147161675051,...))"},
-							{"id":"id-3","crs":"WGS84","wkt":"POLYGON((-4.7577667236328125 37.636202454188854,...))"},
-							{"id":"id-4","crs":"WGS84","wkt":"POLYGON((-4.7687530517578125 37.633483617951576,...))"}]
-		}
+    type: object
+    		properties:
+			      sourceData:
+				        type: FlatGeometry[]
+				        uniqueItems: true
+			      overlayData:
+				        type: FlatGeometry[]
+				        uniqueItems: true
+  		  example:{"sourceData":[{"id":"id-0",crs":"WGS84","wkt":"POLYGON((-4.7577667236328125 37.636202454188854,...))"},{"id":"id-1","crs":"WGS84","wkt":"POLYGON((-4.7687530517578125 37.633483617951576,))"}],"overlayData":[{"id":"id-2","crs":"WGS84","wkt":"POLYGON((-4.634513854980469 37.63147161675051,...))"},{"id":"id-3","crs":"WGS84","wkt":"POLYGON((-4.7577667236328125 37.636202454188854,...))"},{"id":"id-4","crs":"WGS84","wkt":"POLYGON((-4.7687530517578125 37.633483617951576,...))"}]		}
 		
-	DivisionData:
-		type: object
-		properties:
-			geomToDivide:
-				type: FlatGeometry				
-			divisionLine:
-				type: FlatGeometry
-		example:{
-			"geomToDivide":{"id":"id-0",crs":"WGS84","wkt":"POLYGON((-4.7577667236328125 37.636202454188854,...))"},
-			"divisionLine":{"id":"id-0",crs":"WGS84","wkt":"LINESTRING (-6.210259817917375 38.259416305016615,...)"}
+  DivisionData:
+		  type: object
+		  properties:
+			    geomToDivide:
+				      type: FlatGeometry				
+			     divisionLine:
+				       type: FlatGeometry
+		  example:{
+    			"geomToDivide":{"id":"id-0",crs":"WGS84","wkt":"POLYGON((-4.7577667236328125 37.636202454188854,...))"},"divisionLine":{"id":"id-0",crs":"WGS84","wkt":"LINESTRING (-6.210259817917375 38.259416305016615,...)"}
 		}
 
-	ErrorEntity:
-		type: object
-		properties:
-			id: integer
-	 		code: string
-	 		status: string
-	 		title: string
-	 		detail:string
-	 		source: string
-	 		link: string
-	 	example:{
-	 			"id":11,
-	 			"code":"BR.409",
-	 			"status":"409",
-	 			"title":"Validation Fail.",
-	 			"detail":"Can not be null",
-	 			"source":"Unprocessable Entity: ",
-	 			"link":"TODO: Error documentation"
-	 			}
+  ErrorEntity:
+  	type: object
+    properties:
+      id: 
+        type: number
+      code: 
+        type: string
+      status: 
+        type: string
+    	title: 
+        type: string
+      detail:
+        type: string
+      source: 
+        type: string
+      link: 
+        type: string
+    example:{
+    			"id":11,
+          "code":"BR.409",
+    			"status":"409",
+    			"title":"Validation Fail.",
+    			"detail":"Can not be null",
+    			"source":"Unprocessable Entity: ",
+    			"link":"TODO: Error documentation"
+    			}
