@@ -192,10 +192,9 @@ public class JTSGeoEngineer implements GeoEngineer {
 	 */
 	@Override
 	public List<FlatGeometry> calculateIntersectedElements(OperationData operationData, double tolerance) {
-		JTSGeoEngineerHelper helper = new JTSGeoEngineerHelper();
-
-		return operationData.getSourceData().stream()
-				.filter(flatGeometry -> helper.intersects(flatGeometry, operationData.getOverlayData(), tolerance))
+		Geometry ovelayCombinedGeometry = helper.getGeom(combine(operationData.getOverlayData()));
+		return operationData.getSourceData().parallelStream().filter(flatGeometry -> helper
+				.getGeom(flatGeometry.getWkt()).buffer(tolerance).intersects(ovelayCombinedGeometry))
 				.collect(Collectors.toList());
 	}
 
@@ -220,12 +219,10 @@ public class JTSGeoEngineer implements GeoEngineer {
 	 */
 	@Override
 	public List<String> calculateOverlapedUnion(OperationData operationData) {
-
 		operationData.getSourceData().addAll(operationData.getOverlayData());
 		final List<Geometry> linesList = new ArrayList<Geometry>();
 		final LinearComponentExtracter lineFilter = new LinearComponentExtracter(linesList);
-		operationData.getSourceData().forEach(
-				flatGeometry -> helper.getGeom(flatGeometry.getWkt()).apply(lineFilter));
+		operationData.getSourceData().forEach(flatGeometry -> helper.getGeom(flatGeometry.getWkt()).apply(lineFilter));
 		LineNoder lineNoder = new LineNoder();
 		final Collection<Geometry> polys = lineNoder.polygonizer(lineNoder.nodeLines(linesList));
 

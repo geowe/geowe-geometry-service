@@ -51,7 +51,7 @@ public class JtsIntersectService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getIntersectionElements(@NotNull @Valid OperationData operationData,
-			@QueryParam("tolerance") @DefaultValue("0.001") double tolerance) {
+			@QueryParam("tolerance") @DefaultValue("0.0") double tolerance) {
 		GeoEngineer geoEngineer = new JTSGeoEngineer();
 
 		List<FlatGeometry> elements = geoEngineer.calculateIntersectedElements(operationData, tolerance);

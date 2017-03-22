@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.geowe.service.geometry.FlatGeometryBuilder;
 import org.geowe.service.model.FlatGeometry;
 import org.jboss.logging.Logger;
 import org.jboss.resteasy.spi.ReaderException;
@@ -96,14 +97,14 @@ public class JTSGeoEngineerHelper {
 		return elementsWkt;
 	}
 
-	public boolean intersects(final FlatGeometry fgeomToIntersect, final Collection<FlatGeometry> flatGeometries,
+	public Optional<FlatGeometry> getFirtsIntersected(final FlatGeometry fgeomToIntersect, final Collection<FlatGeometry> flatGeometries,
 			double tolerance) {
 		Geometry geom = getGeom(fgeomToIntersect.getWkt());
-		Optional<FlatGeometry> opt = flatGeometries.parallelStream().filter(
+		Optional<FlatGeometry> optional = flatGeometries.parallelStream().filter(
 				flatGeometry -> (geom.buffer(tolerance).intersects(getGeom(flatGeometry.getWkt()).buffer(tolerance))))
 				.findFirst();
 
-		return opt.isPresent();
+		return optional;
 	}
 
 	public Set<String> getWkts(List<FlatGeometry> overlapedUnionFlatGeometries) {

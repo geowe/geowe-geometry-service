@@ -48,4 +48,8 @@ public class FlatGeometryBuilder {
 	public FlatGeometry build() {
 		return new FlatGeometry(id, crs, wkt);
 	}
+
+	public FlatGeometry buildEmpry() {
+		return new FlatGeometry("", "", "");
+	}
 }

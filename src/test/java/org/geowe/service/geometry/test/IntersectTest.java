@@ -88,10 +88,11 @@ public class IntersectTest {
 		Response response = target.request().post(
 				Entity.entity(opData,"application/json;charset=UTF-8"));
 
-		List<FlatGeometry> intersectionGeometries = response.readEntity(new GenericType<List<FlatGeometry>>(){});
+		List<FlatGeometry> intersectedGeometries = response.readEntity(new GenericType<List<FlatGeometry>>(){});
 		response.close();
+		log.info(DataTestProvider.getGeometryCollection(intersectedGeometries));
 		Assert.isTrue(response.getStatus() == Status.CREATED.getStatusCode());
-		Assert.isTrue(intersectionGeometries.size() == 6);
+		Assert.isTrue(intersectedGeometries.size() == 6);
 	}
 	
 	
@@ -101,10 +102,11 @@ public class IntersectTest {
 		Response response = target.queryParam("tolerance", 0.001).request().post(
 				Entity.entity(opData,"application/json;charset=UTF-8"));
 
-		List<FlatGeometry> intersectionGeometries = response.readEntity(new GenericType<List<FlatGeometry>>(){});
+		List<FlatGeometry> intersectedGeometries = response.readEntity(new GenericType<List<FlatGeometry>>(){});
 		response.close();
+		log.info(DataTestProvider.getGeometryCollection(intersectedGeometries));
 		Assert.isTrue(response.getStatus() == Status.CREATED.getStatusCode());
-		Assert.isTrue(intersectionGeometries.size() == 2);
+		Assert.isTrue(intersectedGeometries.size() == 2);
 	}
 	
 	
