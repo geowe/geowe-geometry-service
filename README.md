@@ -28,4 +28,4 @@ Once you compiled the software, the ggs.war file can be deployed on any server/a
 **GGS** is being tested on Apache Tomcat 8.5. Once deployed you can execute the unit tests included in the project. You can also run tests designed for jmeter included in this repository
 
 ##API
-You can see api´s documentation under development in the directory api
+You can see api's documentation under development in the directory [api](https://github.com/i62lotor/geowe-geometry-service/tree/master/api)
