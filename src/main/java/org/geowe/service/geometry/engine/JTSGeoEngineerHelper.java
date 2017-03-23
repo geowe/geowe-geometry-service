@@ -22,7 +22,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.geowe.service.geometry.FlatGeometryBuilder;
 import org.geowe.service.model.FlatGeometry;
 import org.jboss.logging.Logger;
 import org.jboss.resteasy.spi.ReaderException;

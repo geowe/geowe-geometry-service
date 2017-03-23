@@ -23,7 +23,6 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.geowe.service.geometry.engine.GeometryExtractor;
 import org.geowe.service.model.FlatGeometry;
 import org.geowe.service.model.OperationData;
 import org.geowe.service.model.error.ErrorEntity;

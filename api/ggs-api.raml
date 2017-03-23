@@ -28,128 +28,127 @@ types:!include ggs-types.raml
 				application/json:
 					type:FlatGeometry
 			responses:
-				201: 
-					body:					
+				201:
+					body:
 						application/json:
 							type:FlatGeometry
-	/union:							
+	/union:
 		post:
 			description:calculates the geometry resulting from the union of the geometries sent in the body
-			mediaType:application/json			
+			mediaType:application/json
 			body:
 				type:FlatGeometry[]
 					miItems:2
 					uniqueItems:true
 			responses:
-				201: 
-					body:					
+				201:
+					body:
 						application/json:
 							type:FlatGeometry
-		/combined:							
+		/combined:
 			post:
 				description:Combine a collection of FlatGeometry into a new FlatGeometry, keeping vector boundaries
-				mediaType:application/json			
+				mediaType:application/json
 				body:
 					type:FlatGeometry[]
 						miItems:2
 						uniqueItems:true
 				responses:
-					201: 
-						body:					
+					201:
+						body:
 							application/json:
 								type:FlatGeometry
-		/overlaped:							
+		/overlaped:
 			post:
 				description:Calculate the geometric union (keeping vector boundaries) of source and overlay data sent in the body
-				mediaType:application/json			
+				mediaType:application/json
 				body:
 					type:OperationData
 				responses:
-					201: 
-						body:					
+					201:
+						body:
 							application/json:
 								type:FlatGeometry[]
-
-	/envelope:				
+	/envelope:
 		post:
 			description:calculates the envelope of the geometry sent in the body
-			mediaType:application/json			
+			mediaType:application/json
 			body:
 				type:FlatGeometry
 			responses:
-				201: 
-					body:					
+				201:
+					body:
 						application/json:
 							type:FlatGeometry
-	/centroid:				
+	/centroid:
 		post:
 			description:calculates the centroid of the geometry sent in the body
-			mediaType:application/json			
+			mediaType:application/json
 			body:
 				type:FlatGeometry
 			responses:
-				201: 
-					body:					
+				201:
+					body:
 						application/json:
 							type:FlatGeometry
-	/intersection:				
+	/intersection:
 		post:
 			description:calculates the outline geometry resulting from the intersection of source and overlay data sent in the body
-			mediaType:application/json	
+			mediaType:application/json
 			queryParameters:
 				tolerance:
 					displayName:tolerance
 					type:double
 					description:tolerance to apply operation
 					example:-0.00001
-					required:false	
-					defaultValue:-0.00001		
+					required:false
+					defaultValue:-0.00001
 			body:
-				type:OperationData					
+				type:OperationData
 			responses:
-				201: 
-					body:					
+				201:
+					body:
 						application/json:
 							type: FlatGeometry
-		/elements:				
+		/elements:
 			post:
 				description:calculates an array of geometries resulting from the intersection of source and overlay data sent in the body
-				mediaType:application/json	
+				mediaType:application/json
 				queryParameters:
 					tolerance:
 						displayName:tolerance
 						type:double
 						description:tolerance to apply operation
 						example:-0.00001
-						required:false	
-						defaultValue:-0.00001		
+						required:false
+						defaultValue:-0.00001
 				body:
-					type:OperationData					
+					type:OperationData
 				responses:
-					201: 
-						body:					
+					201:
+						body:
 							application/json:
 								type:FlatGeometry[]
-	/difference:				
+	/difference:
 		post:
 			description:calculates the outline geometry resulting from the difference of source and overlay data sent in the body
-			mediaType:application/json	
+			mediaType:application/json
 			queryParameters:
 				tolerance:
 					displayName:tolerance
 					type:double
 					description:tolerance to apply operation
 					example:-0.00001
-					required:false	
+					required:false
 					defaultValue:-0.00001
 			body:
-				type:OperationData					
+				type:OperationData
 			responses:
-				201: 
-					body:					
+				201:
+					body:
 						application/json:
 							type:FlatGeometry
-		/elements:				
+		/elements:
 			post:
 				description:calculates an array of geometries resulting from the difference of source and overlay data sent in the body
 				mediaType:application/json
@@ -159,35 +158,35 @@ types:!include ggs-types.raml
 						type:double
 						description:tolerance to apply operation
 						example:-0.00001
-						required:false	
-						defaultValue:-0.00001			
+						required:false
+						defaultValue:-0.00001
 				body:
-					type:OperationData					
+					type:OperationData
 				responses:
-					201: 
-						body:					
+					201:
+						body:
 							application/json:
 								type:FlatGeometry[]
-	/sym-difference:				
+	/sym-difference:
 		post:
 			description:calculates the outline geometry resulting from the symmetric difference of source and overlay data sent in the body
-			mediaType:application/json	
+			mediaType:application/json
 			queryParameters:
 				tolerance:
 					displayName:tolerance
 					type:double
 					description:tolerance to apply operation
 					example:-0.00001
-					required:false	
+					required:false
 					defaultValue:-0.00001
 			body:
-				type:OperationData					
+				type:OperationData
 			responses:
-				201: 
-					body:					
+				201:
+					body:
 						application/json:
 							type:FlatGeometry
-		/elements:				
+		/elements:
 			post:
 				description:calculates an array of geometries resulting from the symmetric difference of source and overlay data sent in the body
 				mediaType:application/json
@@ -197,64 +196,64 @@ types:!include ggs-types.raml
 						type:double
 						description:tolerance to apply operation
 						example:-0.00001
-						required:false	
-						defaultValue:-0.00001			
+						required:false
+						defaultValue:-0.00001
 				body:
-					type:OperationData					
+					type:OperationData
 				responses:
-					201: 
-						body:					
+					201:
+						body:
 							application/json:
 								type: FlatGeometry[]
-	/intersect/elements:				
+	/intersect/elements:
 		post:
 			description:Calculates the geometries in source that intersects with overlay data, sent in the body
-			mediaType:application/json	
+			mediaType:application/json
 			queryParameters:
 				tolerance:
 					displayName:tolerance
 					type:double
 					description:tolerance to apply operation
 					example:0.001
-					required:false	
-					defaultValue:0.001		
+					required:false
+					defaultValue:0.001
 			body:
-				type:OperationData					
+				type:OperationData
 			responses:
-				201: 
-					body:					
+				201:
+					body:
 						application/json:
 							type:FlatGeometry[]
 	/division:
 		post:
 			description: Decomposes a Geometry (MultiGeometry wkt) into its basic geometries (Polygon, LineString and Point)
-			mediaType:application/json				
+			mediaType:application/json
 			body:
-				type:FlatGeometry							
+				type:FlatGeometry
 			responses:
-				201: 
-					body:					
+				201:
+					body:
 						application/json:
-							type:FlatGeometry[]							
-		/polygon:				
+							type:FlatGeometry[]
+		/polygon:
 			post:
 				description:Calculates the divided polygons
-				mediaType:application/json				
+				mediaType:application/json
 				body:
-					type:DivisionData								
+					type:DivisionData
 				responses:
-					201: 
-						body:					
+					201:
+						body:
 							application/json:
 								type:FlatGeometry[]
-		/line:				
+		/line:
 			post:
 				description:Calculates the divided lines
-				mediaType:application/json				
+				mediaType:application/json
 				body:
-					type:DivisionData					
+					type:DivisionData
 				responses:
-					201: 
-						body:					
+					201:
+						body:
 							application/json:
 								type:FlatGeometry[]

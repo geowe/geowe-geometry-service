@@ -1,55 +1,54 @@
 #%RAML 1.0 DataType
 version:0.8.0
 types:
-	  FlatGeometry:
-		    type: object
-		    properties:
-			      id:
+	FlatGeometry:
+		type: object
+		properties:
+			id:
         type: string
-			      crs: 
+			crs:
         type: string
-			      wkt: 
+			wkt:
         type: string
         required: true
-		    example:{"id":"my-id","crs": "WGS84","wkt":"POLYGON((-4.7764560451359985 37.73318649600941, ...))"				}
+		example:{"id":"my-id","crs": "WGS84","wkt":"POLYGON((-4.7764560451359985 37.73318649600941, ...))"				}
+
 	OperationData:
     type: object
-    		properties:
-			      sourceData:
-				        type: FlatGeometry[]
-				        uniqueItems: true
-			      overlayData:
-				        type: FlatGeometry[]
-				        uniqueItems: true
-  		  example:{"sourceData":[{"id":"id-0",crs":"WGS84","wkt":"POLYGON((-4.7577667236328125 37.636202454188854,...))"},{"id":"id-1","crs":"WGS84","wkt":"POLYGON((-4.7687530517578125 37.633483617951576,))"}],"overlayData":[{"id":"id-2","crs":"WGS84","wkt":"POLYGON((-4.634513854980469 37.63147161675051,...))"},{"id":"id-3","crs":"WGS84","wkt":"POLYGON((-4.7577667236328125 37.636202454188854,...))"},{"id":"id-4","crs":"WGS84","wkt":"POLYGON((-4.7687530517578125 37.633483617951576,...))"}]		}
-		
+    properties:
+			sourceData:
+				type: FlatGeometry[]
+				uniqueItems: true
+			overlayData:
+				type: FlatGeometry[]
+				uniqueItems: true
+		example:{"sourceData":[{"id":"id-0",crs":"WGS84","wkt":"POLYGON((-4.7577667236328125 37.636202454188854,...))"},{"id":"id-1","crs":"WGS84","wkt":"POLYGON((-4.7687530517578125 37.633483617951576,))"}],"overlayData":[{"id":"id-2","crs":"WGS84","wkt":"POLYGON((-4.634513854980469 37.63147161675051,...))"},{"id":"id-3","crs":"WGS84","wkt":"POLYGON((-4.7577667236328125 37.636202454188854,...))"},{"id":"id-4","crs":"WGS84","wkt":"POLYGON((-4.7687530517578125 37.633483617951576,...))"}]}
+
   DivisionData:
-		  type: object
-		  properties:
-			    geomToDivide:
-				      type: FlatGeometry				
-			     divisionLine:
-				       type: FlatGeometry
-		  example:{
-    			"geomToDivide":{"id":"id-0",crs":"WGS84","wkt":"POLYGON((-4.7577667236328125 37.636202454188854,...))"},"divisionLine":{"id":"id-0",crs":"WGS84","wkt":"LINESTRING (-6.210259817917375 38.259416305016615,...)"}
-		}
+		type: object
+		properties:
+			geomToDivide:
+				type: FlatGeometry
+			divisionLine:
+				type: FlatGeometry
+		example:{"geomToDivide":{"id":"id-0",crs":"WGS84","wkt":"POLYGON((-4.7577667236328125 37.636202454188854,...))"},"divisionLine":{"id":"id-0",crs":"WGS84","wkt":"LINESTRING (-6.210259817917375 38.259416305016615,...)"}}
 
   ErrorEntity:
   	type: object
     properties:
-      id: 
+      id:
         type: number
-      code: 
+      code:
         type: string
-      status: 
+      status:
         type: string
-    	title: 
+    	title:
         type: string
       detail:
         type: string
-      source: 
+      source:
         type: string
-      link: 
+      link:
         type: string
     example:{
     			"id":11,
