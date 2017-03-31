@@ -59,3 +59,26 @@ types:
     			"source":"Unprocessable Entity: ",
     			"link":"TODO: Error documentation"
     			}
+   ValidationResult:
+    type:object
+    properties:
+      id:
+        type:boolean
+      validatedFlatGeometry:
+        type:FlatGeometry
+      errors:
+        type:ValidationErrorData[]
+    example:{
+          "valid": false,
+          "validatedFlatGeometry": {"id": "1", "crs": "EPSG:3857","wkt": "POLYGON((-716727.93313342 5097076.7274115,-237314.89181468 4999237.331224,-863487.02741468 4710611.1124709,-144367.46543655 4651907.4747584,-716727.93313342 5097076.7274115))"},
+          "errors": [{ "id": 401, "description": "Topological Error"}]
+          }
+
+  ValidationErrorData:
+    type:object
+    properties:
+      id:
+        type:number
+      description:
+        type:string
+    example:{ "id": 401, "description": "Topological Error"}

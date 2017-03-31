@@ -374,3 +374,25 @@ Until you have a better documentation you can consult the definition of the serv
 
 **Response Body**: (Collection of `org.geowe.service.model.FlatGeometry`)
 `[{"crs":"string","id":"string","wkt":"string"}]`
+
+
+---------------------------------------
+## `POST operations/jts/validation`
+
+### Request
+
+**Content-Type**: `application/json`
+
+**Request Body**: (`org.geowe.service.model.FlatGeometry`)
+
+`{"crs":"string","id":"string","wkt":"string"}`
+
+### Response
+
+**Content-Type**: `application/json`
+
+#### `201 Created`
+
+**Response Body**: (`org.geowe.service.model.ValidationResult`)
+
+`{"valid":boolean,"validatedFlatGeometry":flatGeometry,"errors":ValidationErrorData[]}`

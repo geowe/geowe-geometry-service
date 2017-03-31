@@ -9,6 +9,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Geometry validations
 - Asynchronous tasks
 
+## [0.9.0]SNAPSHOT - 2017-03-31
+
+### Added
+- Geometry validation Resource (POST). For the moment basic topological validations with JTS
+
 ## [0.8.0]SNAPSHOT - 2017-03-21
 
 ### Added

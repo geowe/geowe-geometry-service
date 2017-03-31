@@ -257,3 +257,14 @@ types:!include ggs-types.raml
 						body:
 							application/json:
 								type:FlatGeometry[]
+	/validation:
+		post:
+			description: get the geometric validation of a FlatGeometry
+			mediaType:application/json
+			body:
+				type:FlatGeometry
+			responses:
+				201:
+					body:
+						application/json:
+							type:ValidationResult

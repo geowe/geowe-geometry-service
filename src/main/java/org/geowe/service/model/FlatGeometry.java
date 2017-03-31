@@ -19,13 +19,15 @@ import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
 
+import org.geowe.service.constraints.TopologyGroup;
+import org.geowe.service.constraints.ValidTopology;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * This class represents a Geometry. It is responsible for storing the geometry
  * data
  * 
- * @author lotor
+ * @author rafa@geowe.org
  *
  */
 public class FlatGeometry implements Serializable{
@@ -38,6 +40,7 @@ public class FlatGeometry implements Serializable{
 
 	@NotNull
 	@NotBlank
+	@ValidTopology(groups={TopologyGroup.class})
 	private String wkt;
 
 	public FlatGeometry(){
@@ -46,7 +49,7 @@ public class FlatGeometry implements Serializable{
 	public FlatGeometry(String id, String crs, String wkt) {
 		this.id = id;
 		this.crs = crs;
-		this.wkt =wkt;
+		this.wkt = wkt;
 	}
 
 	public String getId() {
