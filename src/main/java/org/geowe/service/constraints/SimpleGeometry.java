@@ -26,14 +26,14 @@ import javax.validation.Payload;
 
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = TopologyValidator.class)
+@Constraint(validatedBy = SimpleGeometryValidator.class)
 @Documented
-public @interface ValidTopology {
-	String message() default "{topology.error}";
+public @interface SimpleGeometry {
+	String message() default "{simple.geometry.error}";
 
 	Class<?>[] groups() default {};
 
 	Class<? extends Payload>[] payload() default {};
 
-	int errorCode() default 401;
+	int errorCode() default 402;
 }

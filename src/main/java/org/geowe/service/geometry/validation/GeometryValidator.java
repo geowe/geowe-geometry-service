@@ -24,6 +24,8 @@ import javax.validation.ValidatorFactory;
 
 import org.geowe.service.constraints.TopologyGroup;
 import org.geowe.service.model.FlatGeometry;
+import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
+import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 
 /**
  * Represents a geometry validator. Is responsible for the validation of
@@ -34,9 +36,18 @@ import org.geowe.service.model.FlatGeometry;
  */
 public class GeometryValidator {
 
+	private Validator validator;
+
+	public GeometryValidator() {
+		super();
+		ValidatorFactory factory = Validation.byDefaultProvider().configure()
+				.messageInterpolator(
+						new ResourceBundleMessageInterpolator(new PlatformResourceBundleLocator("ErrorMessages")))
+				.buildValidatorFactory();
+		validator = factory.getValidator();
+	}
+
 	public Set<ConstraintViolation<FlatGeometry>> hasTopologyErros(FlatGeometry flatGeometry) {
-		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-		Validator validator = factory.getValidator();
 
 		Set<ConstraintViolation<FlatGeometry>> constraintsViolations = validator.validate(flatGeometry, TopologyGroup.class);
 
