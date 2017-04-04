@@ -19,6 +19,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.geowe.service.constraints.GeometryValidationGroupDef;
 import org.geowe.service.model.FlatGeometry;
 import org.geowe.service.model.ValidationResult;
 import org.geowe.service.model.error.ErrorEntity;
@@ -71,7 +72,8 @@ public class ValidationTest {
 		FlatGeometry sourceGeom = new FlatGeometry("2", "EPSG:3857", TOPOLOGY_ERROR_POLYGON_WKT);
 				
 		
-		Response response = target.request().post(
+		Response response = target.queryParam("validate", GeometryValidationGroupDef.TOPOLOGY.getName())
+				.request().post(
 				Entity.entity(sourceGeom, "application/json;charset=UTF-8"));
 		Assert.isTrue(response.getStatus() == Status.CREATED.getStatusCode());
 		

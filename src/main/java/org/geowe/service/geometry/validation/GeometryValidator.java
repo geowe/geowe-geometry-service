@@ -15,14 +15,17 @@
  ******************************************************************************/
 package org.geowe.service.geometry.validation;
 
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import org.geowe.service.constraints.TopologyGroup;
+import org.geowe.service.constraints.GeometryValidationGroupDef;
 import org.geowe.service.model.FlatGeometry;
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
 import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
@@ -47,11 +50,27 @@ public class GeometryValidator {
 		validator = factory.getValidator();
 	}
 
-	public Set<ConstraintViolation<FlatGeometry>> hasTopologyErros(FlatGeometry flatGeometry) {
+	public Set<ConstraintViolation<FlatGeometry>> validate(FlatGeometry flatGeometry, Set<String> validationTypes) {
 
-		Set<ConstraintViolation<FlatGeometry>> constraintsViolations = validator.validate(flatGeometry, TopologyGroup.class);
+		Set<ConstraintViolation<FlatGeometry>> constraintsViolations = validator.validate(flatGeometry,
+				getValidationGroups(validationTypes));
 
 		return constraintsViolations;
+	}
+
+	private Class<?>[] getValidationGroups(Set<String> validationTypes) {
+		Set<Class<?>> validationGroups = new HashSet<Class<?>>();
+		if (validationTypes.contains("all")) {
+			validationGroups = Stream.of(GeometryValidationGroupDef.values())
+            .map(GeometryValidationGroupDef::getClazz)
+            .collect(Collectors.toSet());
+		}else{
+			validationGroups = Stream.of(GeometryValidationGroupDef.values())
+		            .filter(vg ->  validationTypes.contains(vg.getName()))
+		            .map(GeometryValidationGroupDef::getClazz)
+		            .collect(Collectors.toSet());
+		}
+		return validationGroups.toArray(new Class<?>[validationGroups.size()]);
 	}
 
 }

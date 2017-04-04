@@ -24,9 +24,11 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.executable.ValidateOnExecution;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -50,8 +52,11 @@ public class JtsValidationService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@ValidateOnExecution
-	public Response validate(@NotNull @Valid FlatGeometry flatGeometry) {
-		Set<ConstraintViolation<FlatGeometry>> errors = new GeometryValidator().hasTopologyErros(flatGeometry);
+	public Response validate(@NotNull @Valid FlatGeometry flatGeometry,
+			@QueryParam("validate") @DefaultValue("all") Set<String> validationType) {
+
+		Set<ConstraintViolation<FlatGeometry>> errors = new GeometryValidator().validate(flatGeometry,
+				validationType);
 
 		return Response.status(Status.CREATED).entity(buildValidationResult(errors, flatGeometry)).build();
 	}
@@ -60,15 +65,16 @@ public class JtsValidationService {
 			FlatGeometry flatGeometry) {
 
 		ValidationResult result = new ValidationResult();
-		
+
 		result.setValid(constraintViolations.isEmpty());
 		result.setValidatedFlatGeometry(flatGeometry);
 		result.setErrors(getValidationErrorData(constraintViolations));
 
 		return result;
 	}
-	
-	private List<ValidationErrorData> getValidationErrorData(Set<ConstraintViolation<FlatGeometry>> constraintViolations){
+
+	private List<ValidationErrorData> getValidationErrorData(
+			Set<ConstraintViolation<FlatGeometry>> constraintViolations) {
 		return constraintViolations.stream()
 				.map(constraintViolation -> new ValidationErrorData(
 						(int) constraintViolation.getConstraintDescriptor().getAttributes().get("errorCode"),
