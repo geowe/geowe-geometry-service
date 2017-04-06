@@ -33,9 +33,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.geowe.service.geometry.engine.JTSGeoEngineerHelper;
 import org.geowe.service.model.FlatGeometry;
 import org.geowe.service.model.ValidationErrorData;
 import org.geowe.service.model.ValidationResult;
+import org.jboss.logging.Logger;
 import org.jboss.resteasy.annotations.GZIP;
 
 /**
@@ -47,6 +49,8 @@ import org.jboss.resteasy.annotations.GZIP;
 @Path("/jts/validation")
 public class JtsValidationService {
 
+	private final Logger log = Logger.getLogger(JtsValidationService.class);
+	
 	@POST
 	@GZIP
 	@Produces(MediaType.APPLICATION_JSON)
@@ -55,6 +59,9 @@ public class JtsValidationService {
 	public Response validate(@NotNull @Valid FlatGeometry flatGeometry,
 			@QueryParam("validate") @DefaultValue("all") Set<String> validationType) {
 
+			log.info("********"+validationType.size());
+			log.info("********"+validationType);
+			
 		Set<ConstraintViolation<FlatGeometry>> errors = new GeometryValidator().validate(flatGeometry,
 				validationType);
 

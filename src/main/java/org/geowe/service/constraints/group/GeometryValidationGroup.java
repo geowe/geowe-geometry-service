@@ -1,4 +1,4 @@
-package org.geowe.service.constraints;
+package org.geowe.service.constraints.group;
 
 public interface GeometryValidationGroup {
 

@@ -387,6 +387,10 @@ Until you have a better documentation you can consult the definition of the serv
 
 `{"crs":"string","id":"string","wkt":"string"}`
 
+**Query Param**: `validate`, `string`
+
+`all`,`topology`,`simplicity`,`orientation`
+
 ### Response
 
 **Content-Type**: `application/json`

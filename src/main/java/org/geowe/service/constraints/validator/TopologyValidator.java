@@ -13,39 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ******************************************************************************/
-package org.geowe.service.constraints;
+package org.geowe.service.constraints.validator;
 
-import org.geowe.service.constraints.group.SimplicityGroup;
-import org.geowe.service.constraints.group.TopologyGroup;
-import org.geowe.service.constraints.group.VertexOrientationGroup;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
+import org.geowe.service.constraints.ValidTopology;
+import org.geowe.service.geometry.engine.JTSGeoEngineerHelper;
 
 /**
- * Type of geometry validation available.
+ * Topology validator. Tests whether the Geometry for an WKT is topologically
+ * valid, according to the OGC SFS specification.
+ * 
  * @author rafa@geowe.org
  *
  */
-public enum GeometryValidationGroupDef {
+public class TopologyValidator implements ConstraintValidator<ValidTopology, String> {
 
-	TOPOLOGY("topology", TopologyGroup.class),
-	SIMPLICITY("simplicity", SimplicityGroup.class),
-	ORIENTATION("orientation",VertexOrientationGroup.class);
-	
-	private String name;
-	private Class<?> clazz;
-	
-	private GeometryValidationGroupDef(String name, Class<?> clazz) {
-		this.name = name;
-		this.clazz = clazz;
+	private JTSGeoEngineerHelper helper;
+
+	@Override
+	public void initialize(ValidTopology constraintAnnotation) {
+		helper = new JTSGeoEngineerHelper();
 	}
 
-	public String getName() {
-		return name;
+	@Override
+	public boolean isValid(String wkt, ConstraintValidatorContext context) {
+		return helper.getGeom(wkt).isValid();
 	}
 
-	public Class<?> getClazz() {
-		return clazz;
-	}
-
-	
-	
 }

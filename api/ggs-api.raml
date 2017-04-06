@@ -1,6 +1,6 @@
 #%RAML 1.0
 title:GTS API
-version:0.8.0
+version:0.9.4
 protocols:[HTTP, HTTPS]
 baseUri:http://server-url/deployed-app/operations
 mediatype:application/json
@@ -261,6 +261,14 @@ types:!include ggs-types.raml
 		post:
 			description: get the geometric validation of a FlatGeometry
 			mediaType:application/json
+			queryParameters:
+				validate:
+					displayName:validate
+					type:string
+					description:validation type to apply (permitted values: all, topology, simplicity)
+					example:topology
+					required:false
+					defaultValue:all
 			body:
 				type:FlatGeometry
 			responses:

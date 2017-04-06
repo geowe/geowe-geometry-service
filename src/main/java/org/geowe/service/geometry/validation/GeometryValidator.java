@@ -59,16 +59,16 @@ public class GeometryValidator {
 	}
 
 	private Class<?>[] getValidationGroups(Set<String> validationTypes) {
-		Set<Class<?>> validationGroups = new HashSet<Class<?>>();
+		final Set<Class<?>> validationGroups = new HashSet<Class<?>>();
 		if (validationTypes.contains("all")) {
-			validationGroups = Stream.of(GeometryValidationGroupDef.values())
+			validationGroups.addAll(Stream.of(GeometryValidationGroupDef.values())
             .map(GeometryValidationGroupDef::getClazz)
-            .collect(Collectors.toSet());
+            .collect(Collectors.toSet()));
 		}else{
-			validationGroups = Stream.of(GeometryValidationGroupDef.values())
-		            .filter(vg ->  validationTypes.contains(vg.getName()))
+			validationGroups.addAll(Stream.of(GeometryValidationGroupDef.values())
+		            .filter(vgd ->  validationTypes.contains(vgd.getName()))
 		            .map(GeometryValidationGroupDef::getClazz)
-		            .collect(Collectors.toSet());
+		            .collect(Collectors.toSet()));
 		}
 		return validationGroups.toArray(new Class<?>[validationGroups.size()]);
 	}

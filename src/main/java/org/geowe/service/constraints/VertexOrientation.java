@@ -15,37 +15,27 @@
  ******************************************************************************/
 package org.geowe.service.constraints;
 
-import org.geowe.service.constraints.group.SimplicityGroup;
-import org.geowe.service.constraints.group.TopologyGroup;
-import org.geowe.service.constraints.group.VertexOrientationGroup;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-/**
- * Type of geometry validation available.
- * @author rafa@geowe.org
- *
- */
-public enum GeometryValidationGroupDef {
+import javax.validation.Constraint;
+import javax.validation.Payload;
 
-	TOPOLOGY("topology", TopologyGroup.class),
-	SIMPLICITY("simplicity", SimplicityGroup.class),
-	ORIENTATION("orientation",VertexOrientationGroup.class);
-	
-	private String name;
-	private Class<?> clazz;
-	
-	private GeometryValidationGroupDef(String name, Class<?> clazz) {
-		this.name = name;
-		this.clazz = clazz;
-	}
+import org.geowe.service.constraints.validator.VertexOrientationValidator;
 
-	public String getName() {
-		return name;
-	}
+@Target({ ElementType.FIELD })
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = VertexOrientationValidator.class)
+@Documented
+public @interface VertexOrientation {
+	String message() default "{vertex.orientarion.error}";
 
-	public Class<?> getClazz() {
-		return clazz;
-	}
+	Class<?>[] groups() default {};
 
-	
-	
+	Class<? extends Payload>[] payload() default {};
+
+	int errorCode() default 404;
 }

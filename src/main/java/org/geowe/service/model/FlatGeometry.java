@@ -19,11 +19,13 @@ import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
 
-import org.geowe.service.constraints.GeometryValidationGroup;
+import org.geowe.service.constraints.DuplicateVertex;
 import org.geowe.service.constraints.SimpleGeometry;
-import org.geowe.service.constraints.SimplicityGroup;
-import org.geowe.service.constraints.TopologyGroup;
 import org.geowe.service.constraints.ValidTopology;
+import org.geowe.service.constraints.VertexOrientation;
+import org.geowe.service.constraints.group.SimplicityGroup;
+import org.geowe.service.constraints.group.TopologyGroup;
+import org.geowe.service.constraints.group.VertexOrientationGroup;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -45,6 +47,8 @@ public class FlatGeometry implements Serializable{
 	@NotBlank
 	@ValidTopology(groups={TopologyGroup.class})
 	@SimpleGeometry(groups={SimplicityGroup.class})
+	@DuplicateVertex(groups={TopologyGroup.class})
+	@VertexOrientation(groups={VertexOrientationGroup.class})
 	private String wkt;
 
 	public FlatGeometry(){
